@@ -1,0 +1,1 @@
+{"version":3,"file":"formatPrice.d.ts","sourceRoot":"","sources":["../../../../src/utils/formatPrice.ts"],"names":[],"mappings":"AAAA;;GAEG;AACH,wBAAgB,WAAW,CAAC,EAC1B,KAAK,EAAE,MAAM,EACb,YAAY,EAAE,aAAkB,EAChC,SAAS,GACV,EAAE;IACD,KAAK,EAAE,MAAM,CAAC;IACd,YAAY,CAAC,EAAE,MAAM,CAAC;IACtB,SAAS,CAAC,EAAE,MAAM,CAAC;CACpB,UA4BA"}

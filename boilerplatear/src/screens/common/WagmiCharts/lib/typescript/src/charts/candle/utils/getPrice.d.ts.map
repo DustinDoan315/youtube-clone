@@ -1,0 +1,1 @@
+{"version":3,"file":"getPrice.d.ts","sourceRoot":"","sources":["../../../../../../src/charts/candle/utils/getPrice.ts"],"names":[],"mappings":"AAEA,OAAO,KAAK,EAAE,OAAO,EAAE,MAAM,UAAU,CAAC;AAExC,wBAAgB,QAAQ,CAAC,EACvB,CAAC,EACD,MAAM,EACN,SAAS,GACV,EAAE;IACD,CAAC,EAAE,MAAM,CAAC;IACV,MAAM,EAAE,OAAO,CAAC;IAChB,SAAS,EAAE,MAAM,CAAC;CACnB,UAIA"}
