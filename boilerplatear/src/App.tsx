@@ -1,18 +1,33 @@
-import RootStack from '@navigation/RootStack';
 import React from 'react';
+import {StyleSheet} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
+import {Provider} from 'react-redux';
+import {PersistGate} from 'redux-persist/integration/react';
+import RootStack from '@navigation/RootStack';
+import {persistor, store} from '@redux/store';
 
 const App = () => {
   return (
-    <GestureHandlerRootView>
+    <GestureHandlerRootView style={styles.container}>
       <SafeAreaProvider>
-        <RootStack />
+        <SafeAreaView style={styles.container}>
+          <Provider store={store}>
+            <PersistGate persistor={persistor} loading={null}>
+              <RootStack />
+            </PersistGate>
+          </Provider>
+        </SafeAreaView>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );
 };
 
-export default App;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 
+export default App;
 export const crimson = 'crimson';

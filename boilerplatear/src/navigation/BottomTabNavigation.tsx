@@ -6,16 +6,9 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import React from 'react';
 import {Pressable, StyleSheet, Text} from 'react-native';
 
-// import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import router from './router';
 import {bottom} from '@screens/bottom';
 const Tab = createBottomTabNavigator();
-
-// type TabRoute = {
-//   title: string;
-//   icon: any;
-//   component: React.ComponentType<any>;
-// };
 
 const TabButton: React.FC<
   | {
@@ -31,17 +24,6 @@ const TabButton: React.FC<
       testID={'bottomBarContainer'}
       onPress={onPress}
       style={styles.container}>
-      {/* <Icon
-        name={
-          name === 'Home'
-            ? 'home-analytics'
-            : name === 'Wallet'
-            ? 'wallet'
-            : 'account-details'
-        }
-        color={focused ? 'crimson' : 'black'}
-        size={30}
-      /> */}
       <Text
         style={{
           color: focused ? 'red' : 'black',
@@ -75,7 +57,7 @@ const BottomContainer = () => {
         component={bottom[router.HOME_SCREEN]}
         options={{
           tabBarShowLabel: false,
-          tabBarButton: props => <TabButton {...props} name={'Home'} />,
+          tabBarButton: (props: any) => <TabButton {...props} name={'Home'} />,
           headerLeft: NullComponent,
         }}
       />
@@ -85,7 +67,9 @@ const BottomContainer = () => {
         component={bottom[router.PROFILE_SCREEN]}
         options={{
           tabBarShowLabel: false,
-          tabBarButton: props => <TabButton {...props} name={'Profile'} />,
+          tabBarButton: (props: any) => (
+            <TabButton {...props} name={'Profile'} />
+          ),
           headerLeft: NullComponent,
         }}
       />
@@ -95,7 +79,9 @@ const BottomContainer = () => {
         component={bottom[router.WALLET_SCREEN]}
         options={{
           tabBarShowLabel: false,
-          tabBarButton: props => <TabButton {...props} name={'Wallet'} />,
+          tabBarButton: (props: any) => (
+            <TabButton {...props} name={'Wallet'} />
+          ),
           headerLeft: NullComponent,
         }}
       />
