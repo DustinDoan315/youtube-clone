@@ -4,10 +4,12 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import React from 'react';
-import {Pressable, StyleSheet, Text} from 'react-native';
+import {Image, Pressable, StyleSheet, Text} from 'react-native';
 
 import router from './router';
 import {bottom} from '@screens/bottom';
+import {icons} from '@assets/index';
+import {screenName} from 'type';
 const Tab = createBottomTabNavigator();
 
 const TabButton: React.FC<
@@ -24,9 +26,24 @@ const TabButton: React.FC<
       testID={'bottomBarContainer'}
       onPress={onPress}
       style={styles.container}>
+      <Image
+        source={
+          name === screenName.home
+            ? icons.home_focus
+            : name === screenName.booking
+            ? icons.heart
+            : icons.table
+        }
+        style={{
+          width: 20,
+          height: 22,
+        }}
+      />
       <Text
         style={{
           color: focused ? 'red' : 'black',
+          marginTop: 5,
+          fontSize: 12,
         }}>
         {name}
       </Text>
@@ -44,12 +61,9 @@ const BottomContainer = () => {
         headerShown: false,
         tabBarHideOnKeyboard: true,
         tabBarStyle: {
-          // position: 'absolute',
-          // bottom: 0,
-          // right: 0,
-          // left: 0,
-          height: 75,
-          paddingBottom: 20,
+          height: 78,
+          paddingBottom: 8,
+          // backgroundColor: 'red',
         },
       }}>
       <Tab.Screen
@@ -57,7 +71,9 @@ const BottomContainer = () => {
         component={bottom[router.HOME_SCREEN]}
         options={{
           tabBarShowLabel: false,
-          tabBarButton: (props: any) => <TabButton {...props} name={'Home'} />,
+          tabBarButton: (props: any) => (
+            <TabButton {...props} name={screenName.home} />
+          ),
           headerLeft: NullComponent,
         }}
       />
@@ -68,7 +84,7 @@ const BottomContainer = () => {
         options={{
           tabBarShowLabel: false,
           tabBarButton: (props: any) => (
-            <TabButton {...props} name={'Profile'} />
+            <TabButton {...props} name={screenName.favorite} />
           ),
           headerLeft: NullComponent,
         }}
@@ -80,7 +96,7 @@ const BottomContainer = () => {
         options={{
           tabBarShowLabel: false,
           tabBarButton: (props: any) => (
-            <TabButton {...props} name={'Wallet'} />
+            <TabButton {...props} name={screenName.booking} />
           ),
           headerLeft: NullComponent,
         }}

@@ -1,31 +1,30 @@
-import {Button, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {useAppDispatch, useAppSelector} from '@redux/hooks';
-import {decrement, increment} from '@redux/features/counter/counterSlice';
+
+import {icons} from '@assets/index';
+import SearchBar from '@components/SearchBar';
+import {Header, PopularCategories, TodaySpecial} from './components';
 
 const HomeView = () => {
   const dispatch = useAppDispatch();
   const data = useAppSelector(state => state.counter);
 
-  console.log('HomeView-----: ', data);
-
-  const add = () => {
-    dispatch(increment());
-  };
-
-  const minus = () => {
-    dispatch(decrement());
-  };
   return (
-    <View>
-      <Text>HomeView</Text>
-
-      <Button title="Click me" onPress={add}></Button>
-      <Button title="Click me" onPress={minus}></Button>
+    <View style={styles.container}>
+      <Header />
+      <SearchBar />
+      <PopularCategories />
+      <TodaySpecial />
     </View>
   );
 };
 
 export default HomeView;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+});
