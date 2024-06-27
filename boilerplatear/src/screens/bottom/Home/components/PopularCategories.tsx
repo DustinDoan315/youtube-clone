@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, {memo, useMemo} from 'react';
 import {View, Text, Image, Pressable, FlatList, StyleSheet} from 'react-native';
 import {icons} from '@assets/index';
 import {Categories} from '@utils/fake';
@@ -6,8 +6,7 @@ import {Categories} from '@utils/fake';
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 14,
-    paddingVertical: 20,
-    marginTop: 15,
+    paddingVertical: 14,
   },
   header: {
     flexDirection: 'row',
@@ -63,7 +62,7 @@ const PopularCategories = () => {
 
   const renderItem = ({item, index}: any) => (
     <View
-      key={item?.id}
+      key={index.toString()}
       style={[styles.listItem, {marginLeft: index === 0 ? 14 : 0}]}>
       <View style={styles.listItemImageContainer}>
         <Image source={item?.icon} style={styles.listItemImage} />
@@ -97,4 +96,4 @@ const PopularCategories = () => {
   );
 };
 
-export default PopularCategories;
+export default memo(PopularCategories);

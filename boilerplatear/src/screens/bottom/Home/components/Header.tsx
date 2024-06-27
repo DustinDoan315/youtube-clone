@@ -1,8 +1,11 @@
 import {View, Text, Image} from 'react-native';
-import React from 'react';
+import React, {memo} from 'react';
 import {icons} from '@assets/index';
 
 const Header = () => {
+  console.log('====================================');
+  console.log(1111111);
+  console.log('====================================');
   return (
     <View
       style={{
@@ -63,4 +66,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default memo(Header);

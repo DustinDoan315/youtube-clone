@@ -10,6 +10,7 @@ import router from './router';
 import {bottom} from '@screens/bottom';
 import {icons} from '@assets/index';
 import {screenName} from 'type';
+import {color} from '@theme/index';
 const Tab = createBottomTabNavigator();
 
 const TabButton: React.FC<
@@ -35,15 +36,16 @@ const TabButton: React.FC<
             : icons.table
         }
         style={{
-          width: 20,
+          width: 22,
           height: 22,
         }}
       />
       <Text
         style={{
-          color: focused ? 'red' : 'black',
+          color: focused ? color.highlight : color.primaryText,
           marginTop: 5,
-          fontSize: 12,
+          fontSize: focused ? 13 : 12,
+          fontWeight: focused && 'bold',
         }}>
         {name}
       </Text>

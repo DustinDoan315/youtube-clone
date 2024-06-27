@@ -17,6 +17,7 @@ export const icons = {
   avatar: require('./icons/avatar.png'),
   down_arrow: require('./icons/down_arrow.png'),
   heart: require('./icons/heart.png'),
+  white_heart: require('./icons/white_heart.png'),
   cart: require('./icons/cart.png'),
   food_1: require('./icons/food_1.png'),
   food_2: require('./icons/food_2.png'),

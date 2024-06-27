@@ -1,7 +1,8 @@
-import React, {useMemo} from 'react';
+import React, {memo, useCallback, useMemo, useState} from 'react';
 import {View, Text, Image, Pressable, FlatList, StyleSheet} from 'react-native';
 import {icons} from '@assets/index';
-import {Categories} from '@utils/fake';
+import {Categories, Special} from '@utils/fake';
+import {color} from '@theme/index';
 
 const styles = StyleSheet.create({
   container: {
@@ -38,11 +39,12 @@ const styles = StyleSheet.create({
   },
   listItem: {
     width: 284,
-    height: 312,
     marginRight: 10,
     alignItems: 'center',
     borderRadius: 10,
-    backgroundColor: 'green',
+    backgroundColor: 'white',
+    borderWidth: 1,
+    borderColor: color.primary,
   },
   listItemImageContainer: {
     borderTopLeftRadius: 10,
@@ -52,7 +54,7 @@ const styles = StyleSheet.create({
     height: 160,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'pink',
+    backgroundColor: color.primary,
   },
   listItemImage: {
     width: 280,
@@ -60,29 +62,52 @@ const styles = StyleSheet.create({
   },
   listItemDescription: {
     width: '100%',
-    paddingVertical: 14,
+    paddingVertical: 7,
     paddingHorizontal: 14,
   },
   listItemText: {
     fontSize: 20,
     fontWeight: '500',
-    color: 'black',
+    color: color.primaryText,
   },
-  listItemDisPrice: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: 'black',
+  listItemDesc: {
+    fontSize: 12,
+    color: color.secondText,
+    marginBottom: 5,
   },
   listItemPrice: {
-    fontSize: 12,
-    marginLeft: 5,
-    color: 'gray',
-    textDecorationLine: 'line-through',
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: color.primaryText,
+  },
+  listItemStar: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginHorizontal: 3,
+    color: color.primaryText,
+  },
+  listItemComment: {
+    fontSize: 16,
+    color: color.primaryText,
   },
 });
 
 const TodaySpecial = () => {
-  const data = Categories;
+  const data = Special;
+  const [favorites, setFavorites] = useState<String[]>([]);
+
+  const toggleFavorite = useCallback(
+    (id: String) => {
+      setFavorites(prevFavorites =>
+        prevFavorites.includes(id)
+          ? prevFavorites.filter(favId => favId !== id)
+          : [...prevFavorites, id],
+      );
+    },
+    [favorites],
+  );
+
+  console.log('favorites', favorites);
 
   const renderItem = ({item, index}: any) => (
     <View
@@ -90,8 +115,10 @@ const TodaySpecial = () => {
       style={[styles.listItem, {marginLeft: index === 0 ? 14 : 0}]}>
       <View style={styles.listItemImageContainer}>
         <Pressable
+          onPress={() => toggleFavorite(item.id)}
           style={{
             position: 'absolute',
+            zIndex: 2,
             top: 10,
             right: 10,
             width: 32,
@@ -99,10 +126,14 @@ const TodaySpecial = () => {
             borderRadius: 32,
             justifyContent: 'center',
             alignItems: 'center',
-            backgroundColor: 'white',
+            backgroundColor: favorites.includes(item?.id)
+              ? color.crimson
+              : 'white',
           }}>
           <Image
-            source={icons.heart}
+            source={
+              favorites.includes(item?.id) ? icons.white_heart : icons.heart
+            }
             style={{
               width: 16,
               height: 16,
@@ -119,11 +150,52 @@ const TodaySpecial = () => {
         <Text style={styles.listItemText}>{item?.name}</Text>
         <View
           style={{
-            flexDirection: 'row',
-            alignItems: 'center',
+            justifyContent: 'center',
+            paddingVertical: 5,
           }}>
-          <Text style={styles.listItemDisPrice}>{item?.disPrice}</Text>
-          <Text style={styles.listItemPrice}>{`$${item?.price}`}</Text>
+          <Text
+            numberOfLines={2}
+            style={styles.listItemDesc}>{`${item?.desc}`}</Text>
+          <Text style={styles.listItemPrice}>{`${item?.price}`}</Text>
+        </View>
+
+        <View
+          style={{
+            alignItems: 'center',
+            paddingVertical: 5,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}>
+          <View
+            style={{
+              alignItems: 'center',
+              flexDirection: 'row',
+            }}>
+            <Image
+              source={icons.star}
+              style={{
+                width: 14,
+                height: 14,
+                marginRight: 4,
+              }}
+              resizeMode="contain"
+            />
+            <Text style={styles.listItemStar}>{`${item?.rating}`}</Text>
+            <Text
+              style={
+                styles.listItemComment
+              }>{`(${item?.numberOfComments})`}</Text>
+          </View>
+
+          <Pressable>
+            <Text
+              style={{
+                textDecorationLine: 'underline',
+                color: color.primaryText,
+              }}>
+              {'View more'}
+            </Text>
+          </Pressable>
         </View>
       </View>
     </View>
@@ -134,7 +206,7 @@ const TodaySpecial = () => {
       <View style={[styles.container, styles.header]}>
         <View style={styles.headerLeft}>
           <Image source={icons.highlight} style={styles.headerImage} />
-          <Text style={styles.headerText}>Today Special</Text>
+          <Text style={styles.headerText}>Today's Special</Text>
         </View>
         <Pressable>
           <Text style={styles.seeAllText}>See all</Text>
@@ -154,4 +226,4 @@ const TodaySpecial = () => {
   );
 };
 
-export default TodaySpecial;
+export default memo(TodaySpecial);
