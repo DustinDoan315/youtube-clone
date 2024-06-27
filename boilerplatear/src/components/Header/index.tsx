@@ -1,6 +1,7 @@
-import {Pressable, StyleSheet, Text} from 'react-native';
+import {Image, Pressable, StyleSheet, Text} from 'react-native';
 import React from 'react';
 import {root} from '@navigation/NavigationRef';
+import {icons} from '@assets/index';
 
 const Header = () => {
   const handleNavigate = () => {
@@ -8,7 +9,15 @@ const Header = () => {
   };
   return (
     <Pressable style={styles.btnGoBack} onPress={handleNavigate}>
-      <Text style={{color: 'white', fontWeight: '700'}}>Go Back</Text>
+      <Image
+        source={icons.down_arrow}
+        resizeMode="contain"
+        style={{
+          width: 18,
+          height: 18,
+          transform: [{rotate: '90deg'}],
+        }}
+      />
     </Pressable>
   );
 };
@@ -17,14 +26,8 @@ export default Header;
 
 const styles = StyleSheet.create({
   btnGoBack: {
-    position: 'absolute',
-    top: 100,
-    left: 20,
-    paddingHorizontal: 10,
-    paddingVertical: 10,
-    borderRadius: 5,
+    paddingBottom: 14,
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'gray',
+    width: 50,
   },
 });

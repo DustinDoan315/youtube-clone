@@ -1,10 +1,27 @@
-import {ScrollView} from 'react-native';
+import {ScrollView, StyleSheet} from 'react-native';
 import React from 'react';
-import HomeView from './HomeView';
-import {styles} from './style';
+import {useAppDispatch, useAppSelector} from '@redux/hooks';
+import SearchBar from '@components/SearchBar';
+import {Header, PopularCategories, TodaySpecial} from './components';
 
-const HomeScreen = () => {
-  return <ScrollView style={styles.container}>{<HomeView />}</ScrollView>;
+const HomeView = () => {
+  const dispatch = useAppDispatch();
+  const data = useAppSelector(state => state.counter);
+  return (
+    <ScrollView style={styles.container}>
+      <Header />
+      <SearchBar />
+      <PopularCategories />
+      <TodaySpecial />
+    </ScrollView>
+  );
 };
 
-export default HomeScreen;
+export default HomeView;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+});

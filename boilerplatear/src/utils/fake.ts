@@ -1,6 +1,6 @@
 import {icons} from '@assets/index';
 
-export const HIGHTEST_BTC_PRICE = 70000;
+export const HIGHTEST_BTC_PRICE = 700000;
 
 export const FakeListAssets = [
   {

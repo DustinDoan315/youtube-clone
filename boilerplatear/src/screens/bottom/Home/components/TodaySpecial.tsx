@@ -3,6 +3,8 @@ import {View, Text, Image, Pressable, FlatList, StyleSheet} from 'react-native';
 import {icons} from '@assets/index';
 import {Categories, Special} from '@utils/fake';
 import {color} from '@theme/index';
+import {commonRoot} from '@navigation/NavigationRef';
+import router from '@navigation/router';
 
 const styles = StyleSheet.create({
   container: {
@@ -107,10 +109,15 @@ const TodaySpecial = () => {
     [favorites],
   );
 
+  const goDetail = () => {
+    commonRoot.navigate(router.DETAIL_PLACE_SCREEN);
+  };
+
   console.log('favorites', favorites);
 
   const renderItem = ({item, index}: any) => (
-    <View
+    <Pressable
+      onPress={goDetail}
       key={item?.id}
       style={[styles.listItem, {marginLeft: index === 0 ? 14 : 0}]}>
       <View style={styles.listItemImageContainer}>
@@ -198,7 +205,7 @@ const TodaySpecial = () => {
           </Pressable>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 
   return (
