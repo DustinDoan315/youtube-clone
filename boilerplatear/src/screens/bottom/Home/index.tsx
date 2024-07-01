@@ -3,13 +3,15 @@ import React from 'react';
 import {useAppDispatch, useAppSelector} from '@redux/hooks';
 import SearchBar from '@components/SearchBar';
 import {Header, PopularCategories, TodaySpecial} from './components';
+import {RootState} from '@redux/store';
 
 const HomeView = () => {
   const dispatch = useAppDispatch();
-  const data = useAppSelector(state => state.counter);
+  const user = useAppSelector((state: RootState) => state.user);
+
   return (
     <ScrollView style={styles.container}>
-      <Header />
+      {user.isLoggedIn && <Header />}
       <SearchBar />
       <PopularCategories />
       <TodaySpecial />

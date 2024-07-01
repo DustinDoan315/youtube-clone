@@ -9,7 +9,7 @@ import {Image, Pressable, StyleSheet, Text} from 'react-native';
 import router from './router';
 import {bottom} from '@screens/bottom';
 import {icons} from '@assets/index';
-import {screenName} from 'type';
+import {screenName} from '@utils/interfaces';
 import {color} from '@theme/index';
 const Tab = createBottomTabNavigator();
 
@@ -22,6 +22,7 @@ const TabButton: React.FC<
   | any
 > = ({name, onPress, accessibilityState}) => {
   const focused = accessibilityState?.selected;
+
   return (
     <Pressable
       testID={'bottomBarContainer'}
@@ -31,12 +32,14 @@ const TabButton: React.FC<
         source={
           name === screenName.home
             ? icons.home_focus
-            : name === screenName.booking
-            ? icons.heart
+            : name === screenName.account && focused
+            ? icons.account_focus
+            : name === screenName.account
+            ? icons.account
             : icons.table
         }
         style={{
-          width: 22,
+          width: 25,
           height: 22,
         }}
       />
@@ -81,8 +84,8 @@ const BottomContainer = () => {
       />
 
       <Tab.Screen
-        name={router.PROFILE_SCREEN}
-        component={bottom[router.PROFILE_SCREEN]}
+        name={router.WALLET_SCREEN}
+        component={bottom[router.ACCOUNT_SCREEN]}
         options={{
           tabBarShowLabel: false,
           tabBarButton: (props: any) => (
@@ -93,12 +96,12 @@ const BottomContainer = () => {
       />
 
       <Tab.Screen
-        name={router.WALLET_SCREEN}
-        component={bottom[router.WALLET_SCREEN]}
+        name={router.ACCOUNT_SCREEN}
+        component={bottom[router.ACCOUNT_SCREEN]}
         options={{
           tabBarShowLabel: false,
           tabBarButton: (props: any) => (
-            <TabButton {...props} name={screenName.booking} />
+            <TabButton {...props} name={screenName.account} />
           ),
           headerLeft: NullComponent,
         }}

@@ -5,7 +5,7 @@ import {common} from '@screens/common';
 
 const CommonStack = createNativeStackNavigator();
 
-const CommonContainer = () => {
+const CommonNavigation = () => {
   return (
     <CommonStack.Navigator screenOptions={{headerShown: false}}>
       <CommonStack.Screen
@@ -16,4 +16,4 @@ const CommonContainer = () => {
   );
 };
 
-export default CommonContainer;
+export default CommonNavigation;

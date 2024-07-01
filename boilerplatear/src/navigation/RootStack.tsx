@@ -4,9 +4,10 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
 
 import {navigationRef} from './NavigationRef';
-import BottomContainer from './BottomTabNavigation';
-import CommonContainer from './CommonContainer';
+import BottomTabNavigation from './BottomTabNavigation';
+import CommonNavigation from './CommonNavigation';
 import router from './router';
+import AuthNavigation from './AuthNavigation';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,14 +19,20 @@ const RootStack = () => {
           headerShown: false,
         }}>
         <Stack.Screen
-          name={router.BOTTOM_CONTAINER}
-          component={BottomContainer}
+          name={router.BOTTOM_NAVIGATION}
+          component={BottomTabNavigation}
           options={{gestureEnabled: false}}
         />
 
         <Stack.Screen
-          name={router.COMMON_CONTAINER}
-          component={CommonContainer}
+          name={router.AUTH_NAVIGATION}
+          component={AuthNavigation}
+          options={{gestureEnabled: false}}
+        />
+
+        <Stack.Screen
+          name={router.COMMON_NAVIGATION}
+          component={CommonNavigation}
           options={{gestureEnabled: false}}
         />
       </Stack.Navigator>

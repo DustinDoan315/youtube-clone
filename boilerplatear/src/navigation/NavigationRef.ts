@@ -31,13 +31,19 @@ export const root: Root = {
 
 export const bottomRoot: RootContainer = {
   navigate: (screenName, screenParams?: object) => {
-    rootNavigate(router.BOTTOM_CONTAINER, screenName, screenParams);
+    rootNavigate(router.BOTTOM_NAVIGATION, screenName, screenParams);
+  },
+};
+
+export const authRoot: RootContainer = {
+  navigate: (screenName, screenParams?: object) => {
+    rootNavigate(router.AUTH_NAVIGATION, screenName, screenParams);
   },
 };
 
 export const commonRoot: RootContainer = {
   navigate: (screenName, screenParams?: object) => {
-    rootNavigate(router.COMMON_CONTAINER, screenName, screenParams);
+    rootNavigate(router.COMMON_NAVIGATION, screenName, screenParams);
   },
 };
 

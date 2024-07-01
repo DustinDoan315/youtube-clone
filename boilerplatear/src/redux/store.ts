@@ -1,22 +1,24 @@
 import {combineReducers, configureStore} from '@reduxjs/toolkit';
-import counterReducer from './features/counter/counterSlice';
 import {persistReducer, persistStore} from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import userReducer from './user/userSlice';
 
 const persistConfig = {
   storage: AsyncStorage,
   key: 'root',
-  whitelist: ['counter'],
+  whitelist: ['user'],
 };
 const rootReducer = combineReducers({
-  counter: counterReducer,
+  user: userReducer,
 });
 
 export const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
-  middleware: getDefaultMiddleware =>
+  middleware: (
+    getDefaultMiddleware, // we can add middleware here such as thunk or saga,...
+  ) =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],

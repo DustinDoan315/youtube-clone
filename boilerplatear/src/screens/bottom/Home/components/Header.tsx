@@ -3,9 +3,6 @@ import React, {memo} from 'react';
 import {icons} from '@assets/index';
 
 const Header = () => {
-  console.log('====================================');
-  console.log(1111111);
-  console.log('====================================');
   return (
     <View
       style={{
