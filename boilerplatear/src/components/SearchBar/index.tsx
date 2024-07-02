@@ -5,7 +5,7 @@ import {color} from '@theme/index';
 
 const SearchBar = () => {
   return (
-    <View style={{paddingHorizontal: 14, paddingVertical: 14}}>
+    <View style={{paddingVertical: 14}}>
       <Pressable
         style={{
           position: 'absolute',

@@ -29,4 +29,7 @@ export const icons = {
   food_1: require('./icons/food_1.png'),
   food_2: require('./icons/food_2.png'),
   food_3: require('./icons/food_3.png'),
+
+  //video
+  video_1: require('./video/video_1.mp4'),
 };
