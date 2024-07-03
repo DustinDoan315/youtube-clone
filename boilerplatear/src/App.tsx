@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {StatusBar, StyleSheet} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 import {Provider} from 'react-redux';
@@ -7,6 +7,7 @@ import {PersistGate} from 'redux-persist/integration/react';
 import RootStack from '@navigation/RootStack';
 import {persistor, store} from '@redux/store';
 import {height, width} from '@utils/response';
+import {color} from './theme';
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
         <SafeAreaView style={styles.container}>
           <Provider store={store}>
             <PersistGate persistor={persistor} loading={null}>
+              <StatusBar barStyle={'light-content'} />
               <RootStack />
             </PersistGate>
           </Provider>
@@ -27,8 +29,8 @@ const App = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: color.dark,
   },
 });
 
 export default App;
-export const crimson = 'crimson';

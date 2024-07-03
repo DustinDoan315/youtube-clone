@@ -1,33 +1,78 @@
-import {Image, Pressable, StyleSheet, Text} from 'react-native';
+import {Image, Pressable, StyleSheet, View} from 'react-native';
 import React from 'react';
-import {root} from '@navigation/NavigationRef';
 import {icons} from '@assets/index';
+import {color} from '@theme/index';
 
 const Header = () => {
-  const handleNavigate = () => {
-    root.goBack();
-  };
   return (
-    <Pressable style={styles.btnGoBack} onPress={handleNavigate}>
+    <View style={styles.container}>
       <Image
-        source={icons.down_arrow}
+        source={icons.youtube_logo_big}
         resizeMode="contain"
-        style={{
-          width: 18,
-          height: 18,
-          transform: [{rotate: '90deg'}],
-        }}
+        style={styles.logo}
       />
-    </Pressable>
+      <View style={styles.iconContainer}>
+        <Pressable>
+          <Image
+            source={icons.connect_tv}
+            resizeMode="contain"
+            style={styles.icon}
+          />
+        </Pressable>
+        <Pressable>
+          <Image
+            source={icons.bell}
+            resizeMode="contain"
+            style={[styles.icon, styles.bellIcon]}
+          />
+        </Pressable>
+        <Pressable>
+          <Image
+            source={icons.search}
+            resizeMode="contain"
+            style={styles.icon}
+          />
+        </Pressable>
+        <Pressable>
+          <Image
+            source={icons.avatar}
+            resizeMode="contain"
+            style={[styles.icon, styles.avatarIcon]}
+          />
+        </Pressable>
+      </View>
+    </View>
   );
 };
 
 export default Header;
 
 const styles = StyleSheet.create({
-  btnGoBack: {
-    paddingBottom: 14,
-    justifyContent: 'center',
-    width: 50,
+  container: {
+    height: 44,
+    width: '100%',
+    justifyContent: 'space-between',
+    backgroundColor: color.dark,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+  },
+  logo: {
+    width: 86,
+    height: 20,
+  },
+  iconContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  icon: {
+    width: 24,
+    height: 24,
+  },
+  bellIcon: {
+    marginHorizontal: 18,
+  },
+  avatarIcon: {
+    marginLeft: 18,
   },
 });

@@ -10,7 +10,6 @@ export const icons = {
   receipt: require('./icons/receipt.png'),
   highlight: require('./icons/highlight.png'),
   star: require('./icons/star.png'),
-  search: require('./icons/search.png'),
   location: require('./icons/location.png'),
   avatar: require('./icons/avatar.png'),
   down_arrow: require('./icons/down_arrow.png'),
@@ -18,12 +17,25 @@ export const icons = {
   white_heart: require('./icons/white_heart.png'),
   cart: require('./icons/cart.png'),
 
+  youtube_logo_big: require('./AppIcons/youtube_logo_big.png'),
+  youtube_logo: require('./AppIcons/youtube_logo.png'),
+  explore: require('./AppIcons/explore.png'),
+  connect_tv: require('./AppIcons/connect_tv.png'),
+  bell: require('./AppIcons/bell.png'),
+  more: require('./AppIcons/more.png'),
+  search: require('./AppIcons/search.png'),
+  short_red: require('./AppIcons/short_red.png'),
+
   //bottom bar icons
-  home_focus: require('./icons/home_focus.png'),
-  table: require('./icons/table.png'),
-  table_focus: require('./icons/table_focus.png'),
-  account: require('./icons/account.png'),
-  account_focus: require('./icons/account_focus.png'),
+  home_focus: require('./AppIcons/home_focus.png'),
+  home: require('./AppIcons/home.png'),
+  short_focus: require('./AppIcons/short_focus.png'),
+  short: require('./AppIcons/short.png'),
+  create: require('./AppIcons/create.png'),
+  subscribe: require('./AppIcons/subscribe.png'),
+  subscribe_focus: require('./AppIcons/subscribe_focus.png'),
+  library: require('./AppIcons/library.png'),
+  library_focus: require('./AppIcons/library_focus.png'),
 
   // common img
   food_1: require('./icons/food_1.png'),

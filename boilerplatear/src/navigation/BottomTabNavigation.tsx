@@ -9,8 +9,8 @@ import {Image, Pressable, StyleSheet, Text} from 'react-native';
 import router from './router';
 import {bottom} from '@screens/bottom';
 import {icons} from '@assets/index';
-import {screenName} from '@utils/interfaces';
 import {color} from '@theme/index';
+import {getIcon, screenName} from '@utils/helper';
 const Tab = createBottomTabNavigator();
 
 const TabButton: React.FC<
@@ -29,29 +29,22 @@ const TabButton: React.FC<
       onPress={onPress}
       style={styles.container}>
       <Image
-        source={
-          name === screenName.home
-            ? icons.home_focus
-            : name === screenName.account && focused
-            ? icons.account_focus
-            : name === screenName.account
-            ? icons.account
-            : icons.table
-        }
+        source={getIcon(name, focused)}
         style={{
-          width: 25,
-          height: 22,
+          width: name === screenName.create ? 38 : 24,
+          height: name === screenName.create ? 38 : 24,
         }}
       />
-      <Text
-        style={{
-          color: focused ? color.highlight : color.primaryText,
-          marginTop: 5,
-          fontSize: focused ? 13 : 12,
-          fontWeight: focused && 'bold',
-        }}>
-        {name}
-      </Text>
+      {name !== screenName.create && (
+        <Text
+          style={{
+            color: color.white,
+            marginTop: 5,
+            fontSize: 10,
+          }}>
+          {name}
+        </Text>
+      )}
     </Pressable>
   );
 };
@@ -66,9 +59,9 @@ const BottomContainer = () => {
         headerShown: false,
         tabBarHideOnKeyboard: true,
         tabBarStyle: {
-          height: 78,
-          paddingBottom: 8,
-          // backgroundColor: 'red',
+          height: 48,
+          paddingBottom: 0,
+          backgroundColor: color.dark,
         },
       }}>
       <Tab.Screen
@@ -89,19 +82,40 @@ const BottomContainer = () => {
         options={{
           tabBarShowLabel: false,
           tabBarButton: (props: any) => (
-            <TabButton {...props} name={screenName.favorite} />
+            <TabButton {...props} name={screenName.short} />
           ),
           headerLeft: NullComponent,
         }}
       />
-
       <Tab.Screen
-        name={router.ACCOUNT_SCREEN}
+        name={'3'}
         component={bottom[router.ACCOUNT_SCREEN]}
         options={{
           tabBarShowLabel: false,
           tabBarButton: (props: any) => (
-            <TabButton {...props} name={screenName.account} />
+            <TabButton {...props} name={screenName.create} />
+          ),
+          headerLeft: NullComponent,
+        }}
+      />
+      <Tab.Screen
+        name={'4'}
+        component={bottom[router.ACCOUNT_SCREEN]}
+        options={{
+          tabBarShowLabel: false,
+          tabBarButton: (props: any) => (
+            <TabButton {...props} name={screenName.subscription} />
+          ),
+          headerLeft: NullComponent,
+        }}
+      />
+      <Tab.Screen
+        name={'5'}
+        component={bottom[router.ACCOUNT_SCREEN]}
+        options={{
+          tabBarShowLabel: false,
+          tabBarButton: (props: any) => (
+            <TabButton {...props} name={screenName.library} />
           ),
           headerLeft: NullComponent,
         }}
