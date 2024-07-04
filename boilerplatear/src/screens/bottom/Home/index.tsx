@@ -14,23 +14,42 @@ import {
 import ShortBanner from '@components/ShortBanner';
 import {icons} from '@assets/index';
 import {ListData} from '@utils/fake';
+import {bottomRoot} from '@navigation/NavigationRef';
+import router from '@navigation/router';
+import {useIsFocused} from '@react-navigation/native';
 
 const HomeView = () => {
-  const dispatch = useAppDispatch();
-  const user = useAppSelector((state: RootState) => state.user);
   const videoRefs = useRef<{[key: string]: any}>({});
-  const ShortRefs = useRef<{[key: string]: any}>({});
+  const shortRefs = useRef<{[key: string]: any}>({});
   const [activeVideoIndex, setActiveVideoIndex] = useState<number | null>(0);
   const [activeShortIndex, setActiveShortIndex] = useState<number | null>(0);
   const [shortPosition, setShortPosition] = useState<number | null>(0);
 
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (!isFocused) {
+      setActiveVideoIndex(9999);
+      setActiveShortIndex(9999);
+      // Pause all video and short refs when the screen is not focused
+      Object.values(videoRefs.current).forEach(ref => ref?.pause());
+      Object.values(shortRefs.current).forEach(ref => ref?.pause());
+    }
+  }, [isFocused]);
+
   useEffect(() => {
     const position = ListData.findIndex((item: any) => item.id === 'short');
     setShortPosition(position);
-  }, [ListData]);
+  }, []);
 
   const handlePlay = (index: number) => {
     setActiveVideoIndex(index);
+  };
+
+  const navigateShortScreen = (index: number) => {
+    bottomRoot.navigate(router.SHORT_SCREEN, {
+      sourceVideo: index % 2 === 1 ? icons.short_1 : icons.short_2,
+    });
   };
 
   const handleScrollVideoBanner = (event: any) => {
@@ -51,10 +70,11 @@ const HomeView = () => {
     return (
       <View>
         <ShortBanner
-          ref={(ref: any) => (ShortRefs.current[index] = ref)}
+          ref={(ref: any) => (shortRefs.current[index] = ref)}
           isFocus={index === activeShortIndex}
           paused={shortPosition !== activeVideoIndex}
           index={index}
+          navigateShortScreen={navigateShortScreen}
         />
       </View>
     );
@@ -64,31 +84,15 @@ const HomeView = () => {
     return (
       <View style={styles.container}>
         {item.id === 'short' ? (
-          <View
-            style={{
-              marginVertical: 12,
-            }}>
-            <View
-              style={{
-                alignItems: 'center',
-                flexDirection: 'row',
-              }}>
+          <View style={{marginVertical: 12}}>
+            <View style={{alignItems: 'center', flexDirection: 'row'}}>
               <Image
                 source={icons.short_red}
-                style={{
-                  width: 24,
-                  height: 24,
-                  marginRight: 8,
-                }}
+                style={{width: 24, height: 24, marginRight: 8}}
                 resizeMode="contain"
               />
-
               <Text
-                style={{
-                  fontSize: 16,
-                  fontWeight: '600',
-                  color: color.white,
-                }}>
+                style={{fontSize: 16, fontWeight: '600', color: color.white}}>
                 Shorts
               </Text>
             </View>

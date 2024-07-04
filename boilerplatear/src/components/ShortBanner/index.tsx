@@ -1,27 +1,22 @@
-import React, {useRef} from 'react';
+import React, {memo, useRef} from 'react';
 import {View, StyleSheet, Image, Text, Pressable} from 'react-native';
 import Video, {VideoRef} from 'react-native-video';
 
 import {icons} from '@assets/index';
 import {color} from '@theme/index';
-import {bottomRoot} from '@navigation/NavigationRef';
-import router from '@navigation/router';
 
-const ShortBanner = ({isFocus, paused, index}: any) => {
+const ShortBanner = ({isFocus, paused, index, navigateShortScreen}: any) => {
   const videoRef = useRef<VideoRef>(null);
+  console.log('paused', paused);
 
   const handleVideoError = (error: any) => {
     console.error('Video error:', error);
   };
 
-  const navigateShortScreen = () => {
-    bottomRoot.navigate(router.SHORT_SCREEN, {
-      sourceVideo: index % 2 == 1 ? icons.short_1 : icons.short_2,
-    });
-  };
-
   return (
-    <Pressable onPress={navigateShortScreen} style={styles.container}>
+    <Pressable
+      onPress={() => navigateShortScreen(index)}
+      style={styles.container}>
       <Video
         source={index % 2 == 1 ? icons.short_1 : icons.short_2}
         ref={videoRef}
@@ -102,4 +97,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ShortBanner;
+export default memo(ShortBanner);

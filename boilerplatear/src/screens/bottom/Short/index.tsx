@@ -1,85 +1,65 @@
+import React, {useEffect, useState} from 'react';
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import Video from 'react-native-video';
 import {icons} from '@assets/index';
 import {color} from '@theme/index';
-import {height, width} from '@utils/response';
-import {useAppDispatch, useAppSelector} from '@redux/hooks';
-import {RootState} from '@redux/store';
-import {authRoot} from '@navigation/NavigationRef';
-import router from '@navigation/router';
-import {logout} from '@redux/user/userSlice';
-import Video from 'react-native-video';
 import Header from './components/Header';
 import ActivityIcons from './components/ActivityIcons';
+import {useIsFocused} from '@react-navigation/native';
 
 const Short = ({route}: any) => {
   const data = route.params;
-  const dispatch = useAppDispatch();
-  const user = useAppSelector((state: RootState) => state.user);
+  const [isPause, setIsPause] = useState(false);
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (!isFocused) {
+      setIsPause(true);
+    } else {
+      setIsPause(false);
+    }
+  }, [isFocused]);
 
   const handleVideoError = (error: any) => {
     console.error('Video error:', error);
   };
 
+  const handlePause = () => {
+    setIsPause(!isPause);
+  };
+
   return (
-    <View style={styles.container}>
+    <Pressable onPress={handlePause} style={styles.container}>
       <Video
         source={data.sourceVideo}
         onError={handleVideoError}
         style={styles.backgroundVideo}
         repeat
+        paused={isPause}
         resizeMode="stretch"
       />
 
-      <View
-        style={{
-          position: 'absolute',
-          right: 4,
-          top: 8,
-        }}>
+      <View style={styles.headerContainer}>
         <Header />
       </View>
 
-      <View
-        style={{
-          position: 'absolute',
-          right: 0,
-          bottom: 3,
-        }}>
+      <View style={styles.activityIconsContainer}>
         <ActivityIcons />
       </View>
 
       <View style={styles.infoContainer}>
-        <Pressable style={{flexDirection: 'row', alignItems: 'center'}}>
+        <Pressable style={styles.userInfoContainer}>
           <Image
-            style={{
-              width: 32,
-              height: 32,
-            }}
+            style={styles.avatar}
             resizeMode="contain"
             source={icons.avatar}
           />
-          <Text
-            style={[
-              styles.subtitle,
-              {marginHorizontal: 10, color: color.white},
-            ]}>
+          <Text style={[styles.subtitle, styles.username]}>
             @stevenhechinese
           </Text>
-
-          <Pressable
-            style={{
-              width: 78,
-              height: 26,
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: 4,
-              backgroundColor: color.bg_subscribe,
-            }}>
-            <Text
-              style={[styles.subtitle, , {fontSize: 14, color: color.white}]}>
-              Subscribe
-            </Text>
+          <Pressable style={styles.subscribeButton}>
+            <Text style={styles.subscribeText}>Subscribe</Text>
           </Pressable>
         </Pressable>
         <View style={styles.textContainer}>
@@ -87,23 +67,16 @@ const Short = ({route}: any) => {
             Config 2022 Opening Keynote - Dylan Field
           </Text>
         </View>
-
         <View style={styles.textSoundContainer}>
           <Image
-            style={{
-              width: 16,
-              height: 16,
-              marginRight: 5,
-            }}
+            style={styles.musicIcon}
             resizeMode="contain"
             source={icons.music}
           />
-          <Text style={[styles.subtitle, {color: color.white}]}>
-            Original Sound
-          </Text>
+          <Text style={styles.subtitle}>Original Sound</Text>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 };
 
@@ -111,15 +84,22 @@ export default Short;
 
 const styles = StyleSheet.create({
   container: {
-    zIndex: 2,
-    width: '100%',
-    height: '100%',
+    flex: 1,
     backgroundColor: color.dark,
   },
   backgroundVideo: {
     width: '100%',
     height: '100%',
-    overflow: 'hidden',
+  },
+  headerContainer: {
+    position: 'absolute',
+    right: 4,
+    top: 8,
+  },
+  activityIconsContainer: {
+    position: 'absolute',
+    right: 0,
+    bottom: 3,
   },
   infoContainer: {
     position: 'absolute',
@@ -129,14 +109,42 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     paddingHorizontal: 8,
   },
+  userInfoContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  avatar: {
+    width: 32,
+    height: 32,
+  },
+  username: {
+    marginHorizontal: 10,
+    color: color.white,
+  },
+  subscribeButton: {
+    width: 78,
+    height: 26,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+    backgroundColor: color.bg_subscribe,
+  },
+  subscribeText: {
+    fontSize: 14,
+    color: color.white,
+  },
   textContainer: {
     maxWidth: '100%',
     marginVertical: 10,
   },
   textSoundContainer: {
-    maxWidth: '100%',
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  musicIcon: {
+    width: 16,
+    height: 16,
+    marginRight: 5,
   },
   title: {
     fontSize: 14,
