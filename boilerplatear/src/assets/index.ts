@@ -25,6 +25,14 @@ export const icons = {
   more: require('./AppIcons/more.png'),
   search: require('./AppIcons/search.png'),
   short_red: require('./AppIcons/short_red.png'),
+  camera: require('./AppIcons/camera.png'),
+  music: require('./AppIcons/music.png'),
+  share: require('./AppIcons/share.png'),
+  like: require('./AppIcons/like.png'),
+  dislike: require('./AppIcons/dislike.png'),
+  comment: require('./AppIcons/comment.png'),
+  remix: require('./AppIcons/remix.png'),
+  soundImage: require('./AppIcons/soundImage.png'),
 
   //bottom bar icons
   home_focus: require('./AppIcons/home_focus.png'),
@@ -45,4 +53,5 @@ export const icons = {
   //video
   video_1: require('./video/video_1.mp4'),
   short_1: require('./video/short_1.mp4'),
+  short_2: require('./video/short_2.mp4'),
 };

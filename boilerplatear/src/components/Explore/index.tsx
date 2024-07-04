@@ -11,7 +11,7 @@ import {icons} from '@assets/index';
 import {color} from '@theme/index';
 
 const Explore = () => {
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [activeIndex, setActiveIndex] = useState<number | null>(0);
 
   const getBackgroundColor = (isActive: boolean) => {
     return isActive ? color.white : color.dark_light_1;

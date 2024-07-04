@@ -6,6 +6,7 @@ export default {
 
   //bottom container
   HOME_SCREEN: 'HOME_SCREEN',
+  SHORT_SCREEN: 'SHORT_SCREEN',
   ACCOUNT_SCREEN: 'ACCOUNT_SCREEN',
   WALLET_SCREEN: 'WALLET_SCREEN',
 

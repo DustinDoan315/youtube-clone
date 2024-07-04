@@ -54,6 +54,7 @@ const HomeView = () => {
           ref={(ref: any) => (ShortRefs.current[index] = ref)}
           isFocus={index === activeShortIndex}
           paused={shortPosition !== activeVideoIndex}
+          index={index}
         />
       </View>
     );

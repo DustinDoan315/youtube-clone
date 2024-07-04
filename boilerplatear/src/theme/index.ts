@@ -6,6 +6,7 @@ export const color = {
   primaryBorder: '#9D9D9D',
   white: '#FFFFFF',
   crimson: '#F84B4B',
+  bg_subscribe: '#BB2619',
   dark: '#0F0F0F',
   dark_light_1: '#272727',
 };

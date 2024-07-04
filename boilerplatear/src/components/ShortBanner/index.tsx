@@ -4,24 +4,31 @@ import Video, {VideoRef} from 'react-native-video';
 
 import {icons} from '@assets/index';
 import {color} from '@theme/index';
+import {bottomRoot} from '@navigation/NavigationRef';
+import router from '@navigation/router';
 
-const ShortBanner = ({isFocus, paused}: any) => {
+const ShortBanner = ({isFocus, paused, index}: any) => {
   const videoRef = useRef<VideoRef>(null);
 
   const handleVideoError = (error: any) => {
     console.error('Video error:', error);
   };
 
+  const navigateShortScreen = () => {
+    bottomRoot.navigate(router.SHORT_SCREEN, {
+      sourceVideo: index % 2 == 1 ? icons.short_1 : icons.short_2,
+    });
+  };
+
   return (
-    <View style={styles.container}>
+    <Pressable onPress={navigateShortScreen} style={styles.container}>
       <Video
-        source={icons.short_1}
+        source={index % 2 == 1 ? icons.short_1 : icons.short_2}
         ref={videoRef}
         onError={handleVideoError}
         style={styles.backgroundVideo}
         paused={paused || !isFocus}
         repeat
-        // muted
         resizeMode="stretch"
       />
 
@@ -49,12 +56,13 @@ const ShortBanner = ({isFocus, paused}: any) => {
           <Text style={styles.subtitle}>437K views</Text>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    zIndex: 2,
     width: 158,
     height: 264,
     borderRadius: 8,

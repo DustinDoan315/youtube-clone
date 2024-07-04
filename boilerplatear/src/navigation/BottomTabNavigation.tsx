@@ -77,8 +77,8 @@ const BottomContainer = () => {
       />
 
       <Tab.Screen
-        name={router.WALLET_SCREEN}
-        component={bottom[router.ACCOUNT_SCREEN]}
+        name={router.SHORT_SCREEN}
+        component={bottom[router.SHORT_SCREEN]}
         options={{
           tabBarShowLabel: false,
           tabBarButton: (props: any) => (
@@ -89,7 +89,7 @@ const BottomContainer = () => {
       />
       <Tab.Screen
         name={'3'}
-        component={bottom[router.ACCOUNT_SCREEN]}
+        component={bottom[router.SHORT_SCREEN]}
         options={{
           tabBarShowLabel: false,
           tabBarButton: (props: any) => (
@@ -100,7 +100,7 @@ const BottomContainer = () => {
       />
       <Tab.Screen
         name={'4'}
-        component={bottom[router.ACCOUNT_SCREEN]}
+        component={bottom[router.SHORT_SCREEN]}
         options={{
           tabBarShowLabel: false,
           tabBarButton: (props: any) => (
@@ -111,7 +111,7 @@ const BottomContainer = () => {
       />
       <Tab.Screen
         name={'5'}
-        component={bottom[router.ACCOUNT_SCREEN]}
+        component={bottom[router.SHORT_SCREEN]}
         options={{
           tabBarShowLabel: false,
           tabBarButton: (props: any) => (
