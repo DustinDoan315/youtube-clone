@@ -150,3 +150,22 @@ export const Special = [
     numberOfComments: '34',
   },
 ];
+
+export const ListData = [
+  {
+    id: 'video',
+    num: '2',
+  },
+  {
+    id: 'short',
+    num: '1',
+  },
+  {
+    id: 'video',
+    num: '3',
+  },
+  {
+    id: 'video',
+    num: '4',
+  },
+];

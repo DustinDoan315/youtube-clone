@@ -44,4 +44,5 @@ export const icons = {
 
   //video
   video_1: require('./video/video_1.mp4'),
+  short_1: require('./video/short_1.mp4'),
 };

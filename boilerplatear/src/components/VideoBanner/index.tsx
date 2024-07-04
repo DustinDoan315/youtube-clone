@@ -5,11 +5,22 @@ import Video, {VideoRef} from 'react-native-video';
 import {icons} from '@assets/index';
 import {color} from '@theme/index';
 import {formatTime} from '@utils/helper';
+import {width} from '@utils/response';
 
-const VideoBanner = ({isFocus}: any) => {
+const VideoBanner = ({isFocus, onPlay}: any) => {
   const videoRef = useRef<VideoRef>(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [isPlay, setIsPlay] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!isFocus) {
+      videoRef.current?.pause();
+      setIsPlay(false);
+    } else {
+      setIsPlay(true);
+    }
+  }, [isFocus]);
 
   const onProgress = (data: any) => {
     setCurrentTime(data.currentTime);
@@ -35,6 +46,10 @@ const VideoBanner = ({isFocus}: any) => {
         paused={!isFocus}
         onProgress={onProgress}
         onLoad={onLoad}
+        onEnd={() => {
+          setCurrentTime(0);
+        }}
+        onPlaybackStateChanged={!isPlay && onPlay}
         controls>
         <View
           style={{
@@ -61,6 +76,21 @@ const VideoBanner = ({isFocus}: any) => {
           </Text>
           <Text style={styles.subtitle}>Figma · 437K views · 7 days ago</Text>
         </View>
+
+        <View
+          style={{
+            position: 'absolute',
+            right: 0,
+            top: 0,
+          }}>
+          <Image
+            style={{
+              width: 16,
+              height: 16,
+            }}
+            source={icons.more}
+          />
+        </View>
       </View>
     </View>
   );
@@ -70,9 +100,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: color.dark,
+    marginVertical: 12,
   },
   backgroundVideo: {
     height: 210,
+    width: width,
+    overflow: 'hidden',
   },
   countdown: {
     fontSize: 12,
@@ -92,6 +125,7 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     flex: 1,
+    maxWidth: width * 0.8,
   },
   title: {
     fontSize: 16,
