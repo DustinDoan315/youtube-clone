@@ -5,55 +5,56 @@ import Video, {VideoRef} from 'react-native-video';
 import {icons} from '@assets/index';
 import {color} from '@theme/index';
 
-const ShortBanner = ({isFocus, paused, index, navigateShortScreen}: any) => {
-  const videoRef = useRef<VideoRef>(null);
-  console.log('paused', paused);
+const ShortBanner = memo(
+  ({isFocus, paused, index, navigateShortScreen}: any) => {
+    const videoRef = useRef<VideoRef>(null);
+    console.log('paused', paused);
 
-  const handleVideoError = (error: any) => {
-    console.error('Video error:', error);
-  };
+    const handleVideoError = (error: any) => {
+      console.error('Video error:', error);
+    };
 
-  return (
-    <Pressable
-      onPress={() => navigateShortScreen(index)}
-      style={styles.container}>
-      <Video
-        source={index % 2 == 1 ? icons.short_1 : icons.short_2}
-        ref={videoRef}
-        onError={handleVideoError}
-        style={styles.backgroundVideo}
-        paused={paused || !isFocus}
-        repeat
-        resizeMode="stretch"
-      />
-
+    return (
       <Pressable
-        style={{
-          position: 'absolute',
-          right: 4,
-          top: 8,
-        }}>
-        <Image
-          style={{
-            width: 16,
-            height: 16,
-          }}
-          resizeMode="contain"
-          source={icons.more}
+        onPress={() => navigateShortScreen(index)}
+        style={styles.container}>
+        <Video
+          source={index % 2 === 1 ? icons.short_1 : icons.short_2}
+          ref={videoRef}
+          onError={handleVideoError}
+          style={styles.backgroundVideo}
+          paused={paused || !isFocus}
+          repeat
+          resizeMode="stretch"
         />
-      </Pressable>
 
-      <View style={styles.infoContainer}>
-        <View style={styles.textContainer}>
-          <Text style={styles.title}>
-            Config 2022 Opening Keynote - Dylan Field
-          </Text>
-          <Text style={styles.subtitle}>437K views</Text>
+        <Pressable style={styles.moreIcon}>
+          <Image
+            style={styles.moreImage}
+            resizeMode="contain"
+            source={icons.more}
+          />
+        </Pressable>
+
+        <View style={styles.infoContainer}>
+          <View style={styles.textContainer}>
+            <Text style={styles.title}>
+              Config 2022 Opening Keynote - Dylan Field
+            </Text>
+            <Text style={styles.subtitle}>437K views</Text>
+          </View>
         </View>
-      </View>
-    </Pressable>
-  );
-};
+      </Pressable>
+    );
+  },
+  (prevProps, nextProps) => {
+    return (
+      prevProps.isFocus === nextProps.isFocus &&
+      prevProps.paused === nextProps.paused &&
+      prevProps.index === nextProps.index
+    );
+  },
+);
 
 const styles = StyleSheet.create({
   container: {
@@ -72,6 +73,15 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderColor: color.dark,
     overflow: 'hidden',
+  },
+  moreIcon: {
+    position: 'absolute',
+    right: 4,
+    top: 8,
+  },
+  moreImage: {
+    width: 16,
+    height: 16,
   },
   infoContainer: {
     position: 'absolute',
@@ -97,4 +107,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default memo(ShortBanner);
+export default ShortBanner;

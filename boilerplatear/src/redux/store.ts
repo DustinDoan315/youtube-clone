@@ -2,23 +2,23 @@ import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import {persistReducer, persistStore} from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import userReducer from './user/userSlice';
+import videoReducer from './video/videoSlice';
 
 const persistConfig = {
   storage: AsyncStorage,
   key: 'root',
-  whitelist: ['user'],
+  whitelist: ['user', 'video'],
 };
 const rootReducer = combineReducers({
   user: userReducer,
+  video: videoReducer,
 });
 
 export const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
-  middleware: (
-    getDefaultMiddleware, // we can add middleware here such as thunk or saga,...
-  ) =>
+  middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],

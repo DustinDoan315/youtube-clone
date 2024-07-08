@@ -2,15 +2,23 @@ import {Image, Pressable, StyleSheet, View} from 'react-native';
 import React from 'react';
 import {icons} from '@assets/index';
 import {color} from '@theme/index';
+import {bottomRoot} from '@navigation/NavigationRef';
+import router from '@navigation/router';
 
 const Header = () => {
+  const goHome = () => {
+    bottomRoot.navigate(router.HOME_SCREEN);
+  };
+
   return (
     <View style={styles.container}>
-      <Image
-        source={icons.youtube_logo_big}
-        resizeMode="contain"
-        style={styles.logo}
-      />
+      <Pressable onPress={goHome}>
+        <Image
+          source={icons.youtube_logo_big}
+          resizeMode="contain"
+          style={styles.logo}
+        />
+      </Pressable>
       <View style={styles.iconContainer}>
         <Pressable>
           <Image

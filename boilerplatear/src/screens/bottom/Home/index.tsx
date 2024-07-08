@@ -14,28 +14,45 @@ import {
 import ShortBanner from '@components/ShortBanner';
 import {icons} from '@assets/index';
 import {ListData} from '@utils/fake';
-import {bottomRoot} from '@navigation/NavigationRef';
+import {bottomRoot, commonRoot} from '@navigation/NavigationRef';
 import router from '@navigation/router';
 import {useIsFocused} from '@react-navigation/native';
+import {setVideoIndex} from '@redux/video/videoSlice';
 
 const HomeView = () => {
+  const dispatch = useAppDispatch();
+  const videoStorage = useAppSelector((state: RootState) => state.video);
+
   const videoRefs = useRef<{[key: string]: any}>({});
   const shortRefs = useRef<{[key: string]: any}>({});
   const [activeVideoIndex, setActiveVideoIndex] = useState<number | null>(0);
   const [activeShortIndex, setActiveShortIndex] = useState<number | null>(0);
   const [shortPosition, setShortPosition] = useState<number | null>(0);
+  const [isScroll, setIsScroll] = useState<boolean>(true);
 
   const isFocused = useIsFocused();
 
   useEffect(() => {
     if (!isFocused) {
-      setActiveVideoIndex(9999);
-      setActiveShortIndex(9999);
-      // Pause all video and short refs when the screen is not focused
-      Object.values(videoRefs.current).forEach(ref => ref?.pause());
-      Object.values(shortRefs.current).forEach(ref => ref?.pause());
+      handleStoreIndex();
+      setActiveVideoIndex(null);
+      setActiveShortIndex(null);
+      setIsScroll(false);
+    } else {
+      setIsScroll(true);
+      setActiveVideoIndex(videoStorage.videoIndex);
+      setActiveShortIndex(videoStorage.shortIndex);
     }
   }, [isFocused]);
+
+  const handleStoreIndex = () => {
+    dispatch(
+      setVideoIndex({
+        video: activeVideoIndex,
+        short: activeShortIndex,
+      }),
+    );
+  };
 
   useEffect(() => {
     const position = ListData.findIndex((item: any) => item.id === 'short');
@@ -99,6 +116,7 @@ const HomeView = () => {
             <FlatList
               horizontal
               data={[1, 2, 3, 4, 5]}
+              scrollEnabled={isScroll}
               onScroll={handleScrollShortBanner}
               renderItem={_renderShortBanner}
               keyExtractor={(_, index) => index.toString()}
@@ -123,9 +141,10 @@ const HomeView = () => {
       <Explore />
       <FlatList
         data={ListData}
+        scrollEnabled={isScroll}
         renderItem={_renderHomeItem}
         keyExtractor={(_, index) => index.toString()}
-        onScroll={handleScrollVideoBanner}
+        onScroll={isScroll ? handleScrollVideoBanner : () => {}}
         showsVerticalScrollIndicator={false}
         ListFooterComponent={() => <View style={{height: 200}} />}
       />

@@ -5,3 +5,8 @@ export interface UserState {
   password: string;
   isLoggedIn: boolean;
 }
+
+export interface VideoState {
+  videoIndex: number | null;
+  shortIndex: number | null;
+}
