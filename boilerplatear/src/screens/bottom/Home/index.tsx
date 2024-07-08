@@ -63,6 +63,12 @@ const HomeView = () => {
     setActiveVideoIndex(index);
   };
 
+  const navigateVideoScreen = (index: number) => {
+    commonRoot.navigate(router.VIDEO_DETAIL_SCREEN, {
+      sourceVideo: index % 2 === 1 ? icons.video_1 : icons.video_1,
+    });
+  };
+
   const navigateShortScreen = (index: number) => {
     bottomRoot.navigate(router.SHORT_SCREEN, {
       sourceVideo: index % 2 === 1 ? icons.short_1 : icons.short_2,
@@ -129,6 +135,7 @@ const HomeView = () => {
             ref={(ref: any) => (videoRefs.current[index] = ref)}
             isFocus={index === activeVideoIndex}
             onPlay={() => handlePlay(index)}
+            navigateVideoScreen={navigateVideoScreen}
           />
         )}
       </View>

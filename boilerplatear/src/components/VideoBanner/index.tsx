@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {View, StyleSheet, Image, Text} from 'react-native';
+import {View, StyleSheet, Image, Text, Pressable} from 'react-native';
 import Video, {VideoRef} from 'react-native-video';
 
 import {icons} from '@assets/index';
@@ -7,7 +7,7 @@ import {color} from '@theme/index';
 import {formatTime} from '@utils/helper';
 import {width} from '@utils/response';
 
-const VideoBanner = ({isFocus, onPlay}: any) => {
+const VideoBanner = ({isFocus, onPlay, navigateVideoScreen}: any) => {
   const videoRef = useRef<VideoRef>(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -37,7 +37,7 @@ const VideoBanner = ({isFocus, onPlay}: any) => {
   };
 
   return (
-    <View style={styles.container}>
+    <Pressable onPress={navigateVideoScreen} style={styles.container}>
       <Video
         source={icons.video_1}
         ref={videoRef}
@@ -50,7 +50,8 @@ const VideoBanner = ({isFocus, onPlay}: any) => {
           setCurrentTime(0);
         }}
         onPlaybackStateChanged={!isPlay && onPlay}
-        controls>
+        // controls
+      >
         <View
           style={{
             position: 'absolute',
@@ -92,7 +93,7 @@ const VideoBanner = ({isFocus, onPlay}: any) => {
           />
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 };
 

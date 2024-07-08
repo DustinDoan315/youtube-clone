@@ -8,7 +8,6 @@ import {color} from '@theme/index';
 const ShortBanner = memo(
   ({isFocus, paused, index, navigateShortScreen}: any) => {
     const videoRef = useRef<VideoRef>(null);
-    console.log('paused', paused);
 
     const handleVideoError = (error: any) => {
       console.error('Video error:', error);

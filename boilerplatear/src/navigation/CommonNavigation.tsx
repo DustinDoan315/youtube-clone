@@ -9,8 +9,8 @@ const CommonNavigation = () => {
   return (
     <CommonStack.Navigator screenOptions={{headerShown: false}}>
       <CommonStack.Screen
-        name={router.DETAIL_PLACE_SCREEN}
-        component={common[router.DETAIL_PLACE_SCREEN]}
+        name={router.VIDEO_DETAIL_SCREEN}
+        component={common[router.VIDEO_DETAIL_SCREEN]}
       />
     </CommonStack.Navigator>
   );
