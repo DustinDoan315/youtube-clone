@@ -1,4 +1,11 @@
-import React, {memo, useEffect, useRef, useState} from 'react';
+import React, {
+  memo,
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+  useMemo,
+} from 'react';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
 import Video, {VideoRef} from 'react-native-video';
 import Header from '@components/Header';
@@ -6,86 +13,104 @@ import ProgressBar from '@components/ProgressBar';
 import {color} from '@theme/index';
 import {formatTime} from '@utils/helper';
 import {width} from '@utils/response';
+import {useIsFocused} from '@react-navigation/native';
+import {root} from '@navigation/NavigationRef';
 
 interface VideoDetailScreenProps {
   isFocus: boolean;
-  paused: boolean;
-  onPlay: () => void;
+  paused?: boolean;
+  onPlay?: () => void;
   route: any;
 }
 
-const VideoDetailScreen: React.FC<VideoDetailScreenProps> = memo(
-  ({isFocus, paused, onPlay, route}) => {
-    const {sourceVideo} = route?.params;
-    const videoRef = useRef<VideoRef>(null);
-    const [currentTime, setCurrentTime] = useState(0);
-    const [duration, setDuration] = useState(0);
-    const [isPlay, setIsPlay] = useState<boolean>(false);
+const VideoDetailScreen: React.FC<VideoDetailScreenProps> = memo(({route}) => {
+  const {sourceVideo} = route?.params;
+  const videoRef = useRef<VideoRef>(null);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [source, setSource] = useState(sourceVideo);
+  const [duration, setDuration] = useState(0);
+  const [isPlay, setIsPlay] = useState<boolean>(true);
+  const isFocused = useIsFocused();
 
-    useEffect(() => {
-      if (!isFocus) {
-        videoRef.current?.pause();
-        setIsPlay(false);
-      } else {
-        setIsPlay(true);
-      }
-    }, [isFocus]);
-
-    const handleTimeUpdate = (time: number) => {
-      setCurrentTime(time);
-      videoRef.current?.seek(time);
+  useEffect(() => {
+    if (!isFocused) {
       setIsPlay(false);
+    } else {
+      setIsPlay(true);
+    }
+
+    return () => {
+      if (videoRef.current) {
+        videoRef.current.pause();
+      }
     };
+  }, [isFocused]);
 
-    const onProgress = (data: any) => {
-      setCurrentTime(data.currentTime);
-    };
+  const handleTimeUpdate = useCallback((time: number) => {
+    setCurrentTime(time);
+    videoRef.current?.seek(time);
+    setIsPlay(true);
+  }, []);
 
-    const onLoad = (data: any) => {
-      setDuration(data.duration);
-    };
+  const onProgress = useCallback((data: any) => {
+    setCurrentTime(data.currentTime);
+  }, []);
 
-    const handleVideoError = (error: any) => {
-      console.error('Video error:', error);
-    };
+  const onLoad = useCallback((data: any) => {
+    setDuration(data.duration);
+  }, []);
 
-    const remainingTime = duration - currentTime;
+  const handleVideoError = useCallback((error: any) => {
+    console.error('Video error:', error);
+  }, []);
 
-    const handlePlayPause = () => {
-      setIsPlay(!isPlay);
-    };
+  const remainingTime = useMemo(
+    () => duration - currentTime,
+    [duration, currentTime],
+  );
 
-    return (
-      <Pressable onPress={handlePlayPause} style={styles.container}>
-        <Header />
-        <Video
-          source={sourceVideo}
-          ref={videoRef}
-          onError={handleVideoError}
-          style={styles.backgroundVideo}
-          paused={paused || !isPlay}
-          onProgress={onProgress}
-          onLoad={onLoad}
-          onEnd={() => {
-            setCurrentTime(0);
-          }}
-          onPlaybackStateChanged={!isPlay ? onPlay : () => {}}>
-          <View style={styles.countdownContainer}>
-            <Text style={styles.countdown}>{formatTime(remainingTime)}</Text>
-          </View>
-          {duration > 0 && (
-            <ProgressBar
-              setIsPlay={setIsPlay}
-              onTimeUpdate={handleTimeUpdate}
-              fullTime={duration}
-              currentTime={currentTime}
-            />
-          )}
-        </Video>
-      </Pressable>
-    );
-  },
-);
+  const handlePlayPause = useCallback(() => {
+    setIsPlay(prev => !prev);
+  }, []);
+
+  const handleGoHome = useCallback(() => {
+    setIsPlay(false);
+    const timeoutId = setTimeout(() => {
+      root.goBack();
+    }, 100);
+
+    return () => clearTimeout(timeoutId);
+  }, []);
+
+  return (
+    <Pressable onPress={handlePlayPause} style={styles.container}>
+      <Header handleGoHome={handleGoHome} />
+      <Video
+        source={source}
+        ref={videoRef}
+        onError={handleVideoError}
+        style={styles.backgroundVideo}
+        paused={!isPlay}
+        onProgress={onProgress}
+        onLoad={onLoad}
+        onEnd={() => {
+          setCurrentTime(0);
+        }}>
+        <View style={styles.countdownContainer}>
+          <Text style={styles.countdown}>{formatTime(remainingTime)}</Text>
+        </View>
+        {duration > 0 && (
+          <ProgressBar
+            setIsPlay={setIsPlay}
+            onTimeUpdate={handleTimeUpdate}
+            fullTime={duration}
+            currentTime={currentTime}
+          />
+        )}
+      </Video>
+    </Pressable>
+  );
+});
 
 const styles = StyleSheet.create({
   container: {

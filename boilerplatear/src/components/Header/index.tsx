@@ -5,14 +5,14 @@ import {color} from '@theme/index';
 import {bottomRoot} from '@navigation/NavigationRef';
 import router from '@navigation/router';
 
-const Header = () => {
+const Header = ({handleGoHome}: any) => {
   const goHome = () => {
-    bottomRoot.navigate(router.HOME_SCREEN);
+    bottomRoot.navigate(router.HOME_SCREEN, {id: '123'});
   };
 
   return (
     <View style={styles.container}>
-      <Pressable onPress={goHome}>
+      <Pressable onPress={handleGoHome || goHome}>
         <Image
           source={icons.youtube_logo_big}
           resizeMode="contain"

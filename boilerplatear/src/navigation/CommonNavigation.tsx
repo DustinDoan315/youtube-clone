@@ -1,7 +1,7 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
-import router from './router';
 import {common} from '@screens/common';
+import router from './router';
 
 const CommonStack = createNativeStackNavigator();
 

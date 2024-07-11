@@ -1,4 +1,4 @@
-import React, {useRef, useEffect} from 'react';
+import React, {useRef, useEffect, memo} from 'react';
 import {View, StyleSheet, PanResponder, Animated} from 'react-native';
 
 interface ProgressBarProps {
@@ -40,14 +40,12 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
     return (newProgress / progressBarWidth) * fullTime;
   };
 
-  // PanResponder for handling gestures
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onPanResponderGrant: (_, gestureState) => {
         pan.setOffset(progressValue.current);
         pan.setValue(0);
-        setIsPlay(false);
       },
       onPanResponderMove: Animated.event([null, {dx: pan}], {
         useNativeDriver: false,
@@ -69,7 +67,6 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
     }),
   ).current;
 
-  // Styles for the handle
   const handleSize = 20;
   const handleStyle = {
     transform: [
@@ -139,4 +136,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProgressBar;
+export default memo(ProgressBar);
