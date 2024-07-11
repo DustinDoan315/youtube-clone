@@ -7,6 +7,7 @@ export const color = {
   white: '#FFFFFF',
   crimson: '#F84B4B',
   bg_subscribe: '#BB2619',
+  bg_red: '#E23325',
   dark: '#0F0F0F',
   dark_light_1: '#272727',
 };

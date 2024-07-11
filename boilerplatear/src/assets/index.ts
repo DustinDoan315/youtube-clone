@@ -44,6 +44,11 @@ export const icons = {
   save_outline: require('./AppIcons/save_outline.png'),
   share_outline: require('./AppIcons/share_outline.png'),
   subtitle: require('./AppIcons/subtitle.png'),
+  settings: require('./AppIcons/settings.png'),
+  continues: require('./AppIcons/continues.png'),
+  pause: require('./AppIcons/pause.png'),
+  next: require('./AppIcons/next.png'),
+  previous: require('./AppIcons/previous.png'),
 
   //bottom bar icons
   home_focus: require('./AppIcons/home_focus.png'),

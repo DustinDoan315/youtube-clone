@@ -8,13 +8,14 @@ import React, {
 } from 'react';
 import {View, Text, StyleSheet, Pressable} from 'react-native';
 import Video, {VideoRef} from 'react-native-video';
-import Header from '@components/Header';
+import Header from './components/Header';
 import ProgressBar from '@components/ProgressBar';
 import {color} from '@theme/index';
 import {formatTime} from '@utils/helper';
 import {width} from '@utils/response';
 import {useIsFocused} from '@react-navigation/native';
 import {root} from '@navigation/NavigationRef';
+import ActivityIcons from './components/ActivityIcons';
 
 interface VideoDetailScreenProps {
   isFocus: boolean;
@@ -27,24 +28,30 @@ const VideoDetailScreen: React.FC<VideoDetailScreenProps> = memo(({route}) => {
   const {sourceVideo} = route?.params;
   const videoRef = useRef<VideoRef>(null);
   const [currentTime, setCurrentTime] = useState(0);
-  const [source, setSource] = useState(sourceVideo);
   const [duration, setDuration] = useState(0);
-  const [isPlay, setIsPlay] = useState<boolean>(true);
+  const [isPlay, setIsPlay] = useState(true);
+  const [isHideActivityIcon, setIsHideActivityIcon] = useState(false);
   const isFocused = useIsFocused();
 
   useEffect(() => {
     if (!isFocused) {
       setIsPlay(false);
-    } else {
-      setIsPlay(true);
     }
-
     return () => {
       if (videoRef.current) {
         videoRef.current.pause();
       }
     };
   }, [isFocused]);
+
+  useEffect(() => {
+    setIsHideActivityIcon(false);
+    const timeoutId = setTimeout(() => {
+      setIsHideActivityIcon(true);
+    }, 2000);
+
+    return () => clearTimeout(timeoutId);
+  }, [isPlay]);
 
   const handleTimeUpdate = useCallback((time: number) => {
     setCurrentTime(time);
@@ -83,32 +90,43 @@ const VideoDetailScreen: React.FC<VideoDetailScreenProps> = memo(({route}) => {
   }, []);
 
   return (
-    <Pressable onPress={handlePlayPause} style={styles.container}>
-      <Header handleGoHome={handleGoHome} />
-      <Video
-        source={source}
-        ref={videoRef}
-        onError={handleVideoError}
-        style={styles.backgroundVideo}
-        paused={!isPlay}
-        onProgress={onProgress}
-        onLoad={onLoad}
-        onEnd={() => {
-          setCurrentTime(0);
-        }}>
-        <View style={styles.countdownContainer}>
-          <Text style={styles.countdown}>{formatTime(remainingTime)}</Text>
-        </View>
-        {duration > 0 && (
-          <ProgressBar
-            setIsPlay={setIsPlay}
-            onTimeUpdate={handleTimeUpdate}
-            fullTime={duration}
-            currentTime={currentTime}
-          />
-        )}
-      </Video>
-    </Pressable>
+    <View style={styles.container}>
+      <View style={styles.headerContainer}>
+        <Header handleGoHome={handleGoHome} />
+      </View>
+
+      <Pressable onPress={handlePlayPause}>
+        <Video
+          source={sourceVideo}
+          ref={videoRef}
+          onError={handleVideoError}
+          style={styles.backgroundVideo}
+          paused={!isPlay}
+          onProgress={onProgress}
+          onLoad={onLoad}
+          onEnd={() => setCurrentTime(0)}>
+          {!isHideActivityIcon || !isPlay ? (
+            <View style={styles.activityIconsContainer}>
+              <ActivityIcons isPlay={isPlay} setIsPlay={setIsPlay} />
+            </View>
+          ) : null}
+          <View style={styles.countdownContainer}>
+            <Text style={styles.countdown}>
+              {formatTime(currentTime)} / {formatTime(duration)}
+            </Text>
+          </View>
+        </Video>
+      </Pressable>
+
+      {duration > 0 && (
+        <ProgressBar
+          setIsPlay={setIsPlay}
+          onTimeUpdate={handleTimeUpdate}
+          fullTime={duration}
+          currentTime={currentTime}
+        />
+      )}
+    </View>
   );
 });
 
@@ -117,26 +135,37 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: color.dark,
   },
+  headerContainer: {
+    position: 'absolute',
+    top: 0,
+    zIndex: 100,
+  },
   backgroundVideo: {
     height: 210,
     width: width,
     overflow: 'hidden',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  activityIconsContainer: {
+    zIndex: 100,
+    width: '100%',
+    alignItems: 'center',
+    marginTop: 75,
   },
   countdownContainer: {
     position: 'absolute',
     zIndex: 1000,
     bottom: 10,
-    right: 10,
-    paddingHorizontal: 8,
+    left: 20,
     paddingVertical: 6,
-    backgroundColor: color.dark_light_1,
-    borderRadius: 4,
     justifyContent: 'center',
     alignItems: 'center',
   },
   countdown: {
-    fontSize: 12,
+    fontSize: 14,
     color: color.white,
+    fontWeight: '500',
     textAlign: 'center',
   },
 });

@@ -1,5 +1,13 @@
+import {color} from '@theme/index';
+import {width} from '@utils/response';
 import React, {useRef, useEffect, memo} from 'react';
-import {View, StyleSheet, PanResponder, Animated} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  PanResponder,
+  Animated,
+  Pressable,
+} from 'react-native';
 
 interface ProgressBarProps {
   fullTime: number;
@@ -14,7 +22,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
   onTimeUpdate,
   setIsPlay,
 }) => {
-  const progressBarWidth = 300;
+  const progressBarWidth = width;
   const pan = useRef(new Animated.Value(0)).current;
 
   const progressValue = useRef(0);
@@ -67,7 +75,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
     }),
   ).current;
 
-  const handleSize = 20;
+  const handleSize = 12;
   const handleStyle = {
     transform: [
       {
@@ -111,28 +119,31 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 999,
-    height: 50,
-    backgroundColor: 'white',
+    height: 10,
+    width: width,
+    backgroundColor: 'transparent',
+    position: 'absolute',
+    top: 205,
   },
   progressContainer: {
-    width: 300,
-    height: 10,
-    backgroundColor: '#e0e0e0',
+    width: '100%',
+    height: 2,
+    backgroundColor: false ? color.bg_red : '#8C8C8C',
     borderRadius: 10,
     overflow: 'hidden',
   },
   progress: {
     height: 10,
-    backgroundColor: '#ff0000',
+    backgroundColor: color.bg_red,
     position: 'absolute',
     top: 0,
     left: 0,
   },
   handle: {
     position: 'absolute',
-    backgroundColor: 'green',
-    top: 15,
-    left: 50,
+    backgroundColor: color.bg_red,
+    top: -1,
+    left: 0,
   },
 });
 
