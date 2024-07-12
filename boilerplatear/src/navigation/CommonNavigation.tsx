@@ -12,6 +12,11 @@ const CommonNavigation = () => {
         name={router.VIDEO_DETAIL_SCREEN}
         component={common[router.VIDEO_DETAIL_SCREEN]}
       />
+
+      <CommonStack.Screen
+        name={router.VIDEO_DETAIL_SCREEN_V2}
+        component={common[router.VIDEO_DETAIL_SCREEN_V2]}
+      />
     </CommonStack.Navigator>
   );
 };

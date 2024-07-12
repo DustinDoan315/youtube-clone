@@ -1,26 +1,23 @@
-import React, {
-  memo,
-  useEffect,
-  useRef,
-  useState,
-  useCallback,
-  useMemo,
-} from 'react';
-import {View, Text, StyleSheet, Pressable} from 'react-native';
+import React, {memo, useEffect, useRef, useState, useCallback} from 'react';
+import {View, Text, StyleSheet, Pressable, Image, FlatList} from 'react-native';
 import Video, {VideoRef} from 'react-native-video';
 import Header from './components/Header';
 import ProgressBar from '@components/ProgressBar';
 import {color} from '@theme/index';
 import {formatTime} from '@utils/helper';
-import {width} from '@utils/response';
 import {useIsFocused} from '@react-navigation/native';
 import {root} from '@navigation/NavigationRef';
 import ActivityIcons from './components/ActivityIcons';
+import {icons} from '@assets/index';
+import Orientation from 'react-native-orientation-locker';
+import Title from './components/Title';
+import UserCard from './components/UserCard';
+import DescriptionActivityIcons from './components/DescriptionActivityIcons';
+import Comments from './components/Comments';
+import ListVideo from './components/ListVideo';
+import {VideoHeight} from '@utils/response';
 
 interface VideoDetailScreenProps {
-  isFocus: boolean;
-  paused?: boolean;
-  onPlay?: () => void;
   route: any;
 }
 
@@ -30,7 +27,9 @@ const VideoDetailScreen: React.FC<VideoDetailScreenProps> = memo(({route}) => {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isPlay, setIsPlay] = useState(true);
+  const [isFullScreen, setIsFullScreen] = useState(false);
   const [isHideActivityIcon, setIsHideActivityIcon] = useState(false);
+
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -38,18 +37,13 @@ const VideoDetailScreen: React.FC<VideoDetailScreenProps> = memo(({route}) => {
       setIsPlay(false);
     }
     return () => {
-      if (videoRef.current) {
-        videoRef.current.pause();
-      }
+      videoRef.current?.pause();
     };
   }, [isFocused]);
 
   useEffect(() => {
     setIsHideActivityIcon(false);
-    const timeoutId = setTimeout(() => {
-      setIsHideActivityIcon(true);
-    }, 2000);
-
+    const timeoutId = setTimeout(() => setIsHideActivityIcon(true), 2000);
     return () => clearTimeout(timeoutId);
   }, [isPlay]);
 
@@ -59,73 +53,102 @@ const VideoDetailScreen: React.FC<VideoDetailScreenProps> = memo(({route}) => {
     setIsPlay(true);
   }, []);
 
-  const onProgress = useCallback((data: any) => {
-    setCurrentTime(data.currentTime);
-  }, []);
-
-  const onLoad = useCallback((data: any) => {
-    setDuration(data.duration);
-  }, []);
-
-  const handleVideoError = useCallback((error: any) => {
-    console.error('Video error:', error);
-  }, []);
-
-  const remainingTime = useMemo(
-    () => duration - currentTime,
-    [duration, currentTime],
+  const onProgress = useCallback(
+    (data: any) => setCurrentTime(data.currentTime),
+    [],
   );
 
-  const handlePlayPause = useCallback(() => {
-    setIsPlay(prev => !prev);
-  }, []);
+  const onLoad = useCallback((data: any) => setDuration(data.duration), []);
+
+  const handleVideoError = useCallback(
+    (error: any) => console.error('Video error:', error),
+    [],
+  );
+
+  const handlePlayPause = useCallback(() => setIsPlay(prev => !prev), []);
 
   const handleGoHome = useCallback(() => {
     setIsPlay(false);
-    const timeoutId = setTimeout(() => {
-      root.goBack();
-    }, 100);
-
+    const timeoutId = setTimeout(() => root.goBack(), 100);
     return () => clearTimeout(timeoutId);
   }, []);
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <Header handleGoHome={handleGoHome} />
-      </View>
+  const handleFullScreen = useCallback(() => {
+    if (isFullScreen) {
+      Orientation.lockToPortrait();
+    } else {
+      Orientation.lockToLandscape();
+    }
+    setIsFullScreen(!isFullScreen);
+  }, [isFullScreen]);
 
-      <Pressable onPress={handlePlayPause}>
-        <Video
-          source={sourceVideo}
-          ref={videoRef}
-          onError={handleVideoError}
-          style={styles.backgroundVideo}
-          paused={!isPlay}
-          onProgress={onProgress}
-          onLoad={onLoad}
-          onEnd={() => setCurrentTime(0)}>
-          {!isHideActivityIcon || !isPlay ? (
-            <View style={styles.activityIconsContainer}>
-              <ActivityIcons isPlay={isPlay} setIsPlay={setIsPlay} />
+  const _renderItem = ({item, index}: any) => {
+    return (
+      <View style={styles.container}>
+        <View style={styles.headerContainer}>
+          <Header handleGoHome={handleGoHome} />
+        </View>
+        <Pressable onPress={handlePlayPause}>
+          <Video
+            fullscreen={isFullScreen}
+            source={sourceVideo}
+            ref={videoRef}
+            onError={handleVideoError}
+            style={styles.backgroundVideo}
+            paused={!isPlay}
+            onProgress={onProgress}
+            onLoad={onLoad}
+            onEnd={() => setCurrentTime(0)}>
+            {!isHideActivityIcon || !isPlay ? (
+              <View style={styles.activityIconsContainer}>
+                <ActivityIcons isPlay={isPlay} setIsPlay={setIsPlay} />
+              </View>
+            ) : null}
+            <View style={styles.countdownContainer}>
+              <Text style={styles.countdown}>
+                {formatTime(currentTime)} / {formatTime(duration)}
+              </Text>
+              <Pressable onPress={handleFullScreen}>
+                <Image
+                  source={icons.full_screen}
+                  resizeMode="contain"
+                  style={styles.fullScreenIcon}
+                />
+              </Pressable>
             </View>
-          ) : null}
-          <View style={styles.countdownContainer}>
-            <Text style={styles.countdown}>
-              {formatTime(currentTime)} / {formatTime(duration)}
-            </Text>
-          </View>
-        </Video>
-      </Pressable>
+          </Video>
+        </Pressable>
 
-      {duration > 0 && (
-        <ProgressBar
-          setIsPlay={setIsPlay}
-          onTimeUpdate={handleTimeUpdate}
-          fullTime={duration}
-          currentTime={currentTime}
-        />
-      )}
+        {duration > 0 && (
+          <ProgressBar
+            isFullScreen={isFullScreen}
+            setIsPlay={setIsPlay}
+            onTimeUpdate={handleTimeUpdate}
+            fullTime={duration}
+            currentTime={currentTime}
+          />
+        )}
+        <Title />
+        <UserCard />
+        <DescriptionActivityIcons />
+        <Comments />
+        <ListVideo />
+      </View>
+    );
+  };
+
+  return (
+    <View
+      style={{
+        backgroundColor: color.dark,
+      }}>
+      <FlatList
+        data={[1]}
+        renderItem={_renderItem}
+        keyExtractor={(_, index) => index.toString()}
+        showsVerticalScrollIndicator={false}
+        ListFooterComponent={() => <View style={{height: VideoHeight}} />}
+      />
     </View>
   );
 });
@@ -142,7 +165,7 @@ const styles = StyleSheet.create({
   },
   backgroundVideo: {
     height: 210,
-    width: width,
+    width: '100%',
     overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',
@@ -157,9 +180,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: 1000,
     bottom: 10,
-    left: 20,
+    width: '100%',
     paddingVertical: 6,
-    justifyContent: 'center',
+    paddingHorizontal: 20,
+    justifyContent: 'space-between',
+    flexDirection: 'row',
     alignItems: 'center',
   },
   countdown: {
@@ -167,6 +192,10 @@ const styles = StyleSheet.create({
     color: color.white,
     fontWeight: '500',
     textAlign: 'center',
+  },
+  fullScreenIcon: {
+    width: 16,
+    height: 16,
   },
 });
 

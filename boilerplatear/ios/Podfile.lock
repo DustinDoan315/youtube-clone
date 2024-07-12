@@ -941,6 +941,8 @@ PODS:
     - React-Core
   - react-native-netinfo (11.3.2):
     - React-Core
+  - react-native-orientation-locker (1.7.0):
+    - React-Core
   - react-native-safe-area-context (4.10.5):
     - React-Core
   - react-native-video (6.3.0):
@@ -1342,6 +1344,7 @@ DEPENDENCIES:
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
   - react-native-config (from `../node_modules/react-native-config`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
+  - react-native-orientation-locker (from `../node_modules/react-native-orientation-locker`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-video (from `../node_modules/react-native-video`)
   - React-nativeconfig (from `../node_modules/react-native/ReactCommon`)
@@ -1445,6 +1448,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-config"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
+  react-native-orientation-locker:
+    :path: "../node_modules/react-native-orientation-locker"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-video:
@@ -1543,6 +1548,7 @@ SPEC CHECKSUMS:
   React-Mapbuffer: 11029dcd47c5c9e057a4092ab9c2a8d10a496a33
   react-native-config: d7d8a0c65f7fa523197879f6b777997abbfc987e
   react-native-netinfo: 076df4f9b07f6670acf4ce9a75aac8d34c2e2ccc
+  react-native-orientation-locker: 5819fd23ca89cbac0d736fb4314745f62716d517
   react-native-safe-area-context: a240ad4b683349e48b1d51fed1611138d1bdad97
   react-native-video: 449453bcc9e02d17f7d5dd55e07bafd4129cec5c
   React-nativeconfig: b0073a590774e8b35192fead188a36d1dca23dec

@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {FlatList, StyleSheet, View, Image, Text} from 'react-native';
 import {useAppDispatch, useAppSelector} from '@redux/hooks';
 import {RootState} from '@redux/store';
@@ -23,8 +23,6 @@ const HomeView = () => {
   const dispatch = useAppDispatch();
   const videoStorage = useAppSelector((state: RootState) => state.video);
 
-  const videoRefs = useRef<{[key: string]: any}>({});
-  const shortRefs = useRef<{[key: string]: any}>({});
   const [activeVideoIndex, setActiveVideoIndex] = useState<number | null>(0);
   const [activeShortIndex, setActiveShortIndex] = useState<number | null>(0);
   const [shortPosition, setShortPosition] = useState<number | null>(0);
@@ -32,27 +30,27 @@ const HomeView = () => {
 
   const isFocused = useIsFocused();
 
-  useEffect(() => {
-    if (!isFocused) {
-      handleStoreIndex();
-      setActiveVideoIndex(null);
-      setActiveShortIndex(null);
-      setIsScroll(false);
-    } else {
-      setIsScroll(true);
-      setActiveVideoIndex(videoStorage.videoIndex);
-      setActiveShortIndex(videoStorage.shortIndex);
-    }
-  }, [isFocused]);
-
-  const handleStoreIndex = () => {
+  const handleStoreIndex = useCallback(() => {
     dispatch(
       setVideoIndex({
         video: activeVideoIndex,
         short: activeShortIndex,
       }),
     );
-  };
+  }, [activeVideoIndex, activeShortIndex, dispatch]);
+
+  useEffect(() => {
+    if (!isFocused) {
+      handleStoreIndex();
+      setIsScroll(false);
+      setActiveVideoIndex(null);
+      setActiveShortIndex(null);
+    } else {
+      setIsScroll(true);
+      setActiveVideoIndex(videoStorage.videoIndex);
+      setActiveShortIndex(videoStorage.shortIndex);
+    }
+  }, [isFocused]);
 
   useEffect(() => {
     const position = ListData.findIndex((item: any) => item.id === 'short');
@@ -93,7 +91,6 @@ const HomeView = () => {
     return (
       <View>
         <ShortBanner
-          ref={(ref: any) => (shortRefs.current[index] = ref)}
           isFocus={index === activeShortIndex}
           paused={shortPosition !== activeVideoIndex}
           index={index}
@@ -132,7 +129,6 @@ const HomeView = () => {
           </View>
         ) : (
           <VideoBanner
-            ref={(ref: any) => (videoRefs.current[index] = ref)}
             isFocus={index === activeVideoIndex}
             onPlay={() => handlePlay(index)}
             navigateVideoScreen={navigateVideoScreen}

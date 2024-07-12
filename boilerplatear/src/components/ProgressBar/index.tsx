@@ -1,18 +1,13 @@
 import {color} from '@theme/index';
-import {width} from '@utils/response';
+import {height, width} from '@utils/response';
 import React, {useRef, useEffect, memo} from 'react';
-import {
-  View,
-  StyleSheet,
-  PanResponder,
-  Animated,
-  Pressable,
-} from 'react-native';
+import {View, StyleSheet, PanResponder, Animated} from 'react-native';
 
 interface ProgressBarProps {
   fullTime: number;
   currentTime: number;
   setIsPlay: any;
+  isFullScreen: boolean;
   onTimeUpdate: (newTime: number) => void;
 }
 
@@ -21,6 +16,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
   currentTime,
   onTimeUpdate,
   setIsPlay,
+  isFullScreen,
 }) => {
   const progressBarWidth = width;
   const pan = useRef(new Animated.Value(0)).current;
@@ -87,9 +83,42 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
       },
     ],
   };
+  const styles = StyleSheet.create({
+    container: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      zIndex: 999,
+      height: 10,
+      width: isFullScreen ? height : width,
+      backgroundColor: 'transparent',
+      position: 'absolute',
+      top: isFullScreen ? null : 205,
+      bottom: isFullScreen ? 5 : null,
+    },
+    progressContainer: {
+      width: '100%',
+      height: 2,
+      backgroundColor: false ? color.bg_red : '#8C8C8C',
+      borderRadius: 10,
+      overflow: 'hidden',
+    },
+    progress: {
+      height: 10,
+      backgroundColor: color.bg_red,
+      position: 'absolute',
+      top: 0,
+      left: 0,
+    },
+    handle: {
+      position: 'absolute',
+      backgroundColor: color.bg_red,
+      top: -1,
+      left: 0,
+    },
+  });
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container]}>
       <View style={styles.progressContainer}>
         <View
           style={[
@@ -113,38 +142,5 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 999,
-    height: 10,
-    width: width,
-    backgroundColor: 'transparent',
-    position: 'absolute',
-    top: 205,
-  },
-  progressContainer: {
-    width: '100%',
-    height: 2,
-    backgroundColor: false ? color.bg_red : '#8C8C8C',
-    borderRadius: 10,
-    overflow: 'hidden',
-  },
-  progress: {
-    height: 10,
-    backgroundColor: color.bg_red,
-    position: 'absolute',
-    top: 0,
-    left: 0,
-  },
-  handle: {
-    position: 'absolute',
-    backgroundColor: color.bg_red,
-    top: -1,
-    left: 0,
-  },
-});
 
 export default memo(ProgressBar);
