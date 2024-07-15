@@ -11,7 +11,8 @@ const ListVideo = () => {
   const navigateVideoScreen = (index: number) => {
     const screenName = router.VIDEO_DETAIL_SCREEN;
     const sourceVideo = index % 2 === 1 ? icons.video_1 : icons.short_2;
-    commonRoot.navigate(screenName, {sourceVideo});
+    const initialVideoIndex = index;
+    commonRoot.navigate(screenName, {sourceVideo, initialVideoIndex});
   };
 
   const _renderItem = ({item, index}: any) => {
@@ -21,7 +22,7 @@ const ListVideo = () => {
           <VideoBanner
             isFocus={false}
             onPlay={() => {}}
-            navigateVideoScreen={navigateVideoScreen}
+            navigateVideoScreen={() => navigateVideoScreen(index)}
           />
         )}
       </View>

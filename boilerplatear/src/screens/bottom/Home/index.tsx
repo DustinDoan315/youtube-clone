@@ -25,6 +25,7 @@ import {bottomRoot, commonRoot} from '@navigation/NavigationRef';
 import router from '@navigation/router';
 import {useIsFocused} from '@react-navigation/native';
 import {setVideoIndex} from '@redux/video/videoSlice';
+import BottomSheet from '@components/BottomSheet';
 
 const HomeView = () => {
   const dispatch = useAppDispatch();

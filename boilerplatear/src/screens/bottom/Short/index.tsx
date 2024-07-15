@@ -10,14 +10,16 @@ import {useIsFocused} from '@react-navigation/native';
 const Short = ({route}: any) => {
   const data = route.params;
   const [isPause, setIsPause] = useState(false);
-
+  const [sourceVideo, setSourceVideo] = useState<any>(null);
   const isFocused = useIsFocused();
 
   useEffect(() => {
     if (!isFocused) {
       setIsPause(true);
+      setSourceVideo(null);
     } else {
       setIsPause(false);
+      setSourceVideo(data?.sourceVideo || icons.short_2);
     }
   }, [isFocused]);
 
@@ -32,7 +34,7 @@ const Short = ({route}: any) => {
   return (
     <Pressable onPress={handlePause} style={styles.container}>
       <Video
-        source={data.sourceVideo}
+        source={sourceVideo}
         onError={handleVideoError}
         style={styles.backgroundVideo}
         repeat

@@ -6,6 +6,7 @@ import ShortBanner from './ShortBanner';
 import ProgressBar from './ProgressBar';
 import VideoLoading from './VideoLoading';
 import ShortLoading from './ShortLoading';
+import BottomSheet from './BottomSheet';
 
 export {
   Header,
@@ -16,4 +17,5 @@ export {
   ProgressBar,
   VideoLoading,
   ShortLoading,
+  BottomSheet,
 };

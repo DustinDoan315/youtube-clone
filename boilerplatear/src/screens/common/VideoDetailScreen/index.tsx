@@ -22,13 +22,14 @@ interface VideoDetailScreenProps {
 }
 
 const VideoDetailScreen: React.FC<VideoDetailScreenProps> = memo(({route}) => {
-  const {sourceVideo} = route?.params;
+  const {sourceVideo, initialVideoIndex} = route?.params;
   const videoRef = useRef<VideoRef>(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isPlay, setIsPlay] = useState(true);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [isHideActivityIcon, setIsHideActivityIcon] = useState(false);
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(initialVideoIndex);
 
   const isFocused = useIsFocused();
 
