@@ -1,5 +1,12 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {FlatList, StyleSheet, View, Image, Text} from 'react-native';
+import {
+  FlatList,
+  StyleSheet,
+  View,
+  Image,
+  Text,
+  ActivityIndicator,
+} from 'react-native';
 import {useAppDispatch, useAppSelector} from '@redux/hooks';
 import {RootState} from '@redux/store';
 import VideoBanner from '@components/VideoBanner';
@@ -27,6 +34,7 @@ const HomeView = () => {
   const [activeShortIndex, setActiveShortIndex] = useState<number | null>(0);
   const [shortPosition, setShortPosition] = useState<number | null>(0);
   const [isScroll, setIsScroll] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const isFocused = useIsFocused();
 
@@ -56,6 +64,16 @@ const HomeView = () => {
     const position = ListData.findIndex((item: any) => item.id === 'short');
     setShortPosition(position);
   }, []);
+
+  const refresh = () => {
+    setIsLoading(true);
+
+    const idTimer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(idTimer);
+  };
 
   const handlePlay = (index: number) => {
     setActiveVideoIndex(index);
@@ -87,16 +105,15 @@ const HomeView = () => {
     setActiveShortIndex(visibleIndex);
   };
 
-  const _renderShortBanner = ({item, index}: any) => {
+  const _renderShortBanner = ({_, index}: any) => {
     return (
-      <View>
-        <ShortBanner
-          isFocus={index === activeShortIndex}
-          paused={shortPosition !== activeVideoIndex}
-          index={index}
-          navigateShortScreen={navigateShortScreen}
-        />
-      </View>
+      <ShortBanner
+        isLoading={isLoading}
+        isFocus={index === activeShortIndex}
+        paused={shortPosition !== activeVideoIndex}
+        index={index}
+        navigateShortScreen={navigateShortScreen}
+      />
     );
   };
 
@@ -117,6 +134,8 @@ const HomeView = () => {
               </Text>
             </View>
             <FlatList
+              refreshing={isLoading}
+              extraData={isLoading}
               horizontal
               data={[1, 2, 3, 4, 5]}
               scrollEnabled={isScroll}
@@ -129,6 +148,7 @@ const HomeView = () => {
           </View>
         ) : (
           <VideoBanner
+            isLoading={isLoading}
             isFocus={index === activeVideoIndex}
             onPlay={() => handlePlay(index)}
             navigateVideoScreen={navigateVideoScreen}
@@ -139,16 +159,28 @@ const HomeView = () => {
   };
 
   return (
-    <View>
+    <View
+      style={{
+        backgroundColor: color.dark,
+      }}>
       <Header />
       <Explore />
       <FlatList
+        onRefresh={refresh}
+        refreshing={isLoading}
         data={ListData}
         scrollEnabled={isScroll}
         renderItem={_renderHomeItem}
         keyExtractor={(_, index) => index.toString()}
         onScroll={isScroll ? handleScrollVideoBanner : () => {}}
         showsVerticalScrollIndicator={false}
+        ListHeaderComponent={() =>
+          isLoading && (
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator size="large" color={color.bg_subscribe} />
+            </View>
+          )
+        }
         ListFooterComponent={() => <View style={{height: 200}} />}
       />
     </View>
@@ -161,5 +193,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: color.dark,
+  },
+  loadingContainer: {
+    padding: 20,
+    alignItems: 'center',
   },
 });

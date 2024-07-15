@@ -4,9 +4,10 @@ import Video, {VideoRef} from 'react-native-video';
 
 import {icons} from '@assets/index';
 import {color} from '@theme/index';
+import ShortLoading from '@components/ShortLoading';
 
 const ShortBanner = memo(
-  ({isFocus, paused, index, navigateShortScreen}: any) => {
+  ({isFocus, paused, index, navigateShortScreen, isLoading}: any) => {
     const videoRef = useRef<VideoRef>(null);
 
     const handleVideoError = (error: any) => {
@@ -17,15 +18,19 @@ const ShortBanner = memo(
       <Pressable
         onPress={() => navigateShortScreen(index)}
         style={styles.container}>
-        <Video
-          source={index % 2 === 1 ? icons.short_1 : icons.short_2}
-          ref={videoRef}
-          onError={handleVideoError}
-          style={styles.backgroundVideo}
-          paused={paused || !isFocus}
-          repeat
-          resizeMode="stretch"
-        />
+        {!isLoading ? (
+          <Video
+            source={index % 2 === 1 ? icons.short_1 : icons.short_2}
+            ref={videoRef}
+            onError={handleVideoError}
+            style={styles.backgroundVideo}
+            paused={paused || !isFocus}
+            repeat
+            resizeMode="stretch"
+          />
+        ) : (
+          <ShortLoading />
+        )}
 
         <Pressable style={styles.moreIcon}>
           <Image
@@ -50,7 +55,8 @@ const ShortBanner = memo(
     return (
       prevProps.isFocus === nextProps.isFocus &&
       prevProps.paused === nextProps.paused &&
-      prevProps.index === nextProps.index
+      prevProps.index === nextProps.index &&
+      prevProps.isLoading === nextProps.isLoading
     );
   },
 );

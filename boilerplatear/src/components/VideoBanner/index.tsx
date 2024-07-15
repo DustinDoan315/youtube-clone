@@ -6,8 +6,14 @@ import {icons} from '@assets/index';
 import {color} from '@theme/index';
 import {formatTime} from '@utils/helper';
 import {width} from '@utils/response';
+import VideoLoading from '@components/VideoLoading';
 
-const VideoBanner = ({isFocus, onPlay, navigateVideoScreen}: any) => {
+const VideoBanner = ({
+  isFocus,
+  onPlay,
+  navigateVideoScreen,
+  isLoading,
+}: any) => {
   const videoRef = useRef<VideoRef>(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -38,36 +44,42 @@ const VideoBanner = ({isFocus, onPlay, navigateVideoScreen}: any) => {
 
   return (
     <Pressable onPress={navigateVideoScreen} style={styles.container}>
-      <Video
-        source={icons.video_1}
-        ref={videoRef}
-        onError={handleVideoError}
-        style={styles.backgroundVideo}
-        paused={!isFocus}
-        onProgress={onProgress}
-        onLoad={onLoad}
-        onEnd={() => {
-          setCurrentTime(0);
-        }}
-        onPlaybackStateChanged={!isPlay && onPlay}
-        // controls
-      >
-        <View
-          style={{
-            position: 'absolute',
-            zIndex: 1000,
-            bottom: 10,
-            right: 10,
-            paddingHorizontal: 8,
-            paddingVertical: 6,
-            backgroundColor: color.dark_light_1,
-            borderRadius: 4,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text style={styles.countdown}>{`${formatTime(remainingTime)}`}</Text>
-        </View>
-      </Video>
+      {!isLoading ? (
+        <Video
+          source={icons.video_1}
+          ref={videoRef}
+          onError={handleVideoError}
+          style={styles.backgroundVideo}
+          paused={!isFocus}
+          onProgress={onProgress}
+          onLoad={onLoad}
+          onEnd={() => {
+            setCurrentTime(0);
+          }}
+          onPlaybackStateChanged={!isPlay && onPlay}
+          // controls
+        >
+          <View
+            style={{
+              position: 'absolute',
+              zIndex: 1000,
+              bottom: 10,
+              right: 10,
+              paddingHorizontal: 8,
+              paddingVertical: 6,
+              backgroundColor: color.dark_light_1,
+              borderRadius: 4,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text style={styles.countdown}>{`${formatTime(
+              remainingTime,
+            )}`}</Text>
+          </View>
+        </Video>
+      ) : (
+        <VideoLoading duration={duration} />
+      )}
 
       <View style={styles.infoContainer}>
         <Image source={icons.avatar} style={styles.avatar} />

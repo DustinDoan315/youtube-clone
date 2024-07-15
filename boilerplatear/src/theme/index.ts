@@ -10,4 +10,5 @@ export const color = {
   bg_red: '#E23325',
   dark: '#0F0F0F',
   dark_light_1: '#272727',
+  loading: '#333333',
 };
