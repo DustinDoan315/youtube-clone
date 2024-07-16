@@ -165,7 +165,10 @@ const HomeView = () => {
         backgroundColor: color.dark,
       }}>
       <Header />
-      <Explore />
+      <Explore
+        isShowExplore={true}
+        listData={['All', 'Under 10 min', 'Music', 'Manga']}
+      />
       <FlatList
         onRefresh={refresh}
         refreshing={isLoading}

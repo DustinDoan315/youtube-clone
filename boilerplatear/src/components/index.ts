@@ -7,7 +7,9 @@ import ProgressBar from './ProgressBar';
 import VideoLoading from './VideoLoading';
 import ShortLoading from './ShortLoading';
 import BottomSheet from './BottomSheet';
-
+import Create from './Create';
+import ListChannelAvatar from './ListChannelAvatar';
+import ListVideo from './ListVideo';
 export {
   Header,
   SearchBar,
@@ -18,4 +20,7 @@ export {
   VideoLoading,
   ShortLoading,
   BottomSheet,
+  Create,
+  ListVideo,
+  ListChannelAvatar,
 };

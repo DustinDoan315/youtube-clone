@@ -11,6 +11,7 @@ import {bottom} from '@screens/bottom';
 import {color} from '@theme/index';
 import {getIcon, screenName} from '@utils/helper';
 import BottomSheet from '@components/BottomSheet';
+import Create from '@components/Create';
 const Tab = createBottomTabNavigator();
 
 const TabButton: React.FC<
@@ -108,8 +109,8 @@ const BottomContainer = () => {
           }}
         />
         <Tab.Screen
-          name={'4'}
-          component={bottom[router.SHORT_SCREEN]}
+          name={router.SUBSCRIPTION}
+          component={bottom[router.SUBSCRIPTION]}
           options={{
             tabBarShowLabel: false,
             tabBarButton: (props: any) => (
@@ -132,7 +133,7 @@ const BottomContainer = () => {
       </Tab.Navigator>
       {showBottomSheet && (
         <BottomSheet setShowBottomSheet={setShowBottomSheet}>
-          <Text>Hello</Text>
+          <Create setShowBottomSheet={setShowBottomSheet} />
         </BottomSheet>
       )}
     </>
@@ -144,7 +145,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 10,
   },
 });
 

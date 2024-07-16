@@ -49,6 +49,10 @@ export const icons = {
   pause: require('./AppIcons/pause.png'),
   next: require('./AppIcons/next.png'),
   previous: require('./AppIcons/previous.png'),
+  upload: require('./AppIcons/upload.png'),
+  goLive: require('./AppIcons/goLive.png'),
+  edit: require('./AppIcons/edit.png'),
+  close: require('./AppIcons/close.png'),
 
   //bottom bar icons
   home_focus: require('./AppIcons/home_focus.png'),

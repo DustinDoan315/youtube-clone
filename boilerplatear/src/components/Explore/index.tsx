@@ -10,11 +10,16 @@ import React, {useState} from 'react';
 import {icons} from '@assets/index';
 import {color} from '@theme/index';
 
-const Explore = () => {
+interface ExploreType {
+  isShowExplore?: boolean;
+  listData: string[];
+}
+
+const Explore = ({isShowExplore, listData}: ExploreType) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(0);
 
   const getBackgroundColor = (isActive: boolean) => {
-    return isActive ? color.white : color.dark_light_1;
+    return isActive ? color.white : color.dark_light_2;
   };
 
   const getTextColor = (isActive: boolean) => {
@@ -27,15 +32,17 @@ const Explore = () => {
       showsHorizontalScrollIndicator={false}
       style={styles.container}>
       <View style={{alignItems: 'center', flexDirection: 'row'}}>
-        <Pressable style={styles.explore}>
-          <Image
-            source={icons.explore}
-            resizeMode="contain"
-            style={styles.icon}
-          />
-        </Pressable>
+        {isShowExplore && (
+          <Pressable style={styles.explore}>
+            <Image
+              source={icons.explore}
+              resizeMode="contain"
+              style={styles.icon}
+            />
+          </Pressable>
+        )}
         <View style={styles.childContainer}>
-          {['All', 'Under 10 min', 'Music', 'Manga'].map((item, index) => {
+          {listData?.map((item, index) => {
             const isActive = index === activeIndex;
             return (
               <Pressable
@@ -74,7 +81,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 4,
-    backgroundColor: color.dark_light_1,
+    backgroundColor: color.dark_light_2,
   },
   childContainer: {
     flexDirection: 'row',

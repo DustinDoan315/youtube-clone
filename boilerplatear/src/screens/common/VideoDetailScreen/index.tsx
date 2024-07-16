@@ -14,8 +14,8 @@ import Title from './components/Title';
 import UserCard from './components/UserCard';
 import DescriptionActivityIcons from './components/DescriptionActivityIcons';
 import Comments from './components/Comments';
-import ListVideo from './components/ListVideo';
 import {VideoHeight} from '@utils/response';
+import ListVideo from '@components/ListVideo';
 
 interface VideoDetailScreenProps {
   route: any;

@@ -1,5 +1,5 @@
 import {color} from '@theme/index';
-import React, {Children, ReactNode, useEffect, useRef} from 'react';
+import React, {ReactNode, useEffect, useRef} from 'react';
 import {
   Dimensions,
   StyleSheet,
@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 
 const {height: SCREEN_HEIGHT} = Dimensions.get('window');
-const MAX_HEIGHT = SCREEN_HEIGHT * 0.6;
+const MAX_HEIGHT = SCREEN_HEIGHT * 0.55;
 
 interface BottomSheetProps {
   setShowBottomSheet: (isVisible: boolean) => void;
@@ -50,8 +50,6 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
       {...panResponder.panHandlers}
       style={[styles.container, {transform: [{translateY}]}]}>
       <View style={styles.line} />
-      <Text style={styles.text}>Bottom Sheet</Text>
-
       {children}
     </Animated.View>
   );
@@ -60,7 +58,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    height: MAX_HEIGHT,
+    minHeight: MAX_HEIGHT,
     backgroundColor: color.dark_light_1,
     position: 'absolute',
     top: 0,
@@ -74,7 +72,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 20,
     alignSelf: 'center',
-    marginVertical: 10,
+    marginVertical: 14,
   },
   text: {
     color: 'white',

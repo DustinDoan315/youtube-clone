@@ -1,4 +1,4 @@
-import {View, Text, FlatList, Image, StyleSheet} from 'react-native';
+import {View, FlatList, StyleSheet} from 'react-native';
 import React from 'react';
 import {ListData} from '@utils/fake';
 import VideoBanner from '@components/VideoBanner';
@@ -44,7 +44,6 @@ const ListVideo = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: color.dark,
   },
 });
