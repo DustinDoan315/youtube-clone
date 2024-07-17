@@ -11,8 +11,9 @@ import {color} from '@theme/index';
 import ListChannelAvatar from '@components/ListChannelAvatar';
 import {icons} from '@assets/index';
 import ListVideo from '@components/ListVideo';
+import History from '@components/History';
 
-const Subscriptions = () => {
+const Library = () => {
   const fakeDataExplore = ['All', 'Today', 'Continue watching', 'Unwatched'];
   const fakeDataListChannelAvatar = [
     {
@@ -66,6 +67,7 @@ const Subscriptions = () => {
     <View
       style={{
         backgroundColor: color.dark,
+        flex: 1,
       }}>
       <ScrollView
         refreshControl={
@@ -78,13 +80,10 @@ const Subscriptions = () => {
         }
         showsVerticalScrollIndicator={false}>
         <Header />
-        <ListChannelAvatar listData={fakeDataListChannelAvatar} />
-        <Explore listData={fakeDataExplore} />
-
-        <ListVideo isLoading={refreshing} />
+        <History />
       </ScrollView>
     </View>
   );
 };
 
-export default Subscriptions;
+export default Library;

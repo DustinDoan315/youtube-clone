@@ -8,12 +8,27 @@ import {formatTime} from '@utils/helper';
 import {width} from '@utils/response';
 import VideoLoading from '@components/VideoLoading';
 
+interface VideoBannerTYpe {
+  isFocus?: boolean;
+  onPlay?: any;
+  navigateVideoScreen?: any;
+  isLoading?: boolean;
+  sourceVideo?: number | string;
+  videoStyle?: any;
+  justRenderVideo?: boolean;
+  notShowTimeLine?: boolean;
+}
+
 const VideoBanner = ({
   isFocus,
   onPlay,
   navigateVideoScreen,
   isLoading,
-}: any) => {
+  sourceVideo,
+  videoStyle,
+  justRenderVideo,
+  notShowTimeLine,
+}: VideoBannerTYpe) => {
   const videoRef = useRef<VideoRef>(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -46,65 +61,67 @@ const VideoBanner = ({
     <Pressable onPress={navigateVideoScreen} style={styles.container}>
       {!isLoading ? (
         <Video
-          source={icons.video_1}
+          source={sourceVideo || icons.video_1}
           ref={videoRef}
           onError={handleVideoError}
-          style={styles.backgroundVideo}
+          style={videoStyle || styles.backgroundVideo}
           paused={!isFocus}
           onProgress={onProgress}
           onLoad={onLoad}
           onEnd={() => {
             setCurrentTime(0);
           }}
-          onPlaybackStateChanged={!isPlay && onPlay}
-          // controls
-        >
-          <View
-            style={{
-              position: 'absolute',
-              zIndex: 1000,
-              bottom: 10,
-              right: 10,
-              paddingHorizontal: 8,
-              paddingVertical: 6,
-              backgroundColor: color.dark_light_1,
-              borderRadius: 4,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Text style={styles.countdown}>{`${formatTime(
-              remainingTime,
-            )}`}</Text>
-          </View>
+          onPlaybackStateChanged={!isPlay && onPlay}>
+          {!notShowTimeLine && (
+            <View
+              style={{
+                position: 'absolute',
+                zIndex: 1000,
+                bottom: 10,
+                right: 10,
+                paddingHorizontal: 8,
+                paddingVertical: 6,
+                backgroundColor: color.dark_light_1,
+                borderRadius: 4,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Text style={styles.countdown}>{`${formatTime(
+                remainingTime,
+              )}`}</Text>
+            </View>
+          )}
         </Video>
       ) : (
         <VideoLoading duration={duration} />
       )}
 
-      <View style={styles.infoContainer}>
-        <Image source={icons.avatar} style={styles.avatar} />
-        <View style={styles.textContainer}>
-          <Text style={styles.title}>
-            Config 2022 Opening Keynote - Dylan Field
-          </Text>
-          <Text style={styles.subtitle}>Figma · 437K views · 7 days ago</Text>
-        </View>
+      {!justRenderVideo && (
+        <View style={styles.infoContainer}>
+          <Image source={icons.avatar} style={styles.avatar} />
+          <View style={styles.textContainer}>
+            <Text style={styles.title}>
+              Config 2022 Opening Keynote - Dylan Field
+            </Text>
+            <Text style={styles.subtitle}>Figma · 437K views · 7 days ago</Text>
+          </View>
 
-        <View
-          style={{
-            position: 'absolute',
-            right: 0,
-            top: 0,
-          }}>
-          <Image
+          <View
             style={{
-              width: 16,
-              height: 16,
-            }}
-            source={icons.more}
-          />
+              position: 'absolute',
+              right: 0,
+              top: 0,
+            }}>
+            <Image
+              style={{
+                width: 16,
+                height: 16,
+              }}
+              source={icons.more}
+            />
+          </View>
         </View>
-      </View>
+      )}
     </Pressable>
   );
 };

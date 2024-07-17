@@ -6,8 +6,9 @@ import router from '@navigation/router';
 import {commonRoot} from '@navigation/NavigationRef';
 import {icons} from '@assets/index';
 import {color} from '@theme/index';
+import VideoLoading from '@components/VideoLoading';
 
-const ListVideo = () => {
+const ListVideo = ({isLoading}: any) => {
   const navigateVideoScreen = (index: number) => {
     const screenName = router.VIDEO_DETAIL_SCREEN;
     const sourceVideo = index % 2 === 1 ? icons.video_1 : icons.short_2;
@@ -18,12 +19,14 @@ const ListVideo = () => {
   const _renderItem = ({item, index}: any) => {
     return (
       <View style={styles.container}>
-        {item.id === 'video' && (
+        {item.id === 'video' && !isLoading ? (
           <VideoBanner
             isFocus={false}
             onPlay={() => {}}
             navigateVideoScreen={() => navigateVideoScreen(index)}
           />
+        ) : (
+          <VideoLoading />
         )}
       </View>
     );
@@ -45,6 +48,7 @@ const ListVideo = () => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: color.dark,
+    marginBottom: 12,
   },
 });
 

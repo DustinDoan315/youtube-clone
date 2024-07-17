@@ -10,6 +10,7 @@ import BottomSheet from './BottomSheet';
 import Create from './Create';
 import ListChannelAvatar from './ListChannelAvatar';
 import ListVideo from './ListVideo';
+import History from './History';
 export {
   Header,
   SearchBar,
@@ -22,5 +23,6 @@ export {
   BottomSheet,
   Create,
   ListVideo,
+  History,
   ListChannelAvatar,
 };

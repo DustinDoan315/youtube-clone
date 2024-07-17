@@ -53,6 +53,10 @@ export const icons = {
   goLive: require('./AppIcons/goLive.png'),
   edit: require('./AppIcons/edit.png'),
   close: require('./AppIcons/close.png'),
+  avatar_2: require('./AppIcons/avatar_2.png'),
+  playList: require('./AppIcons/playList.png'),
+  playBack: require('./AppIcons/playBack.png'),
+  isShort: require('./AppIcons/isShort.png'),
 
   //bottom bar icons
   home_focus: require('./AppIcons/home_focus.png'),

@@ -120,8 +120,8 @@ const BottomContainer = () => {
           }}
         />
         <Tab.Screen
-          name={'5'}
-          component={bottom[router.SHORT_SCREEN]}
+          name={router.LIBRARY}
+          component={bottom[router.LIBRARY]}
           options={{
             tabBarShowLabel: false,
             tabBarButton: (props: any) => (
