@@ -11,6 +11,8 @@ import Create from './Create';
 import ListChannelAvatar from './ListChannelAvatar';
 import ListVideo from './ListVideo';
 import History from './History';
+import HeaderSearch from './HeaderSearch';
+
 export {
   Header,
   SearchBar,
@@ -24,5 +26,6 @@ export {
   Create,
   ListVideo,
   History,
+  HeaderSearch,
   ListChannelAvatar,
 };

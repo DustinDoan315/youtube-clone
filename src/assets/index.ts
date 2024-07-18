@@ -57,6 +57,9 @@ export const icons = {
   playList: require('./AppIcons/playList.png'),
   playBack: require('./AppIcons/playBack.png'),
   isShort: require('./AppIcons/isShort.png'),
+  arrow_back: require('./AppIcons/arrow_back.png'),
+  arrow_pick: require('./AppIcons/arrow_pick.png'),
+  record: require('./AppIcons/record.png'),
 
   //bottom bar icons
   home_focus: require('./AppIcons/home_focus.png'),

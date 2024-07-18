@@ -2,6 +2,8 @@ import {Image, Pressable, StyleSheet, View} from 'react-native';
 import React from 'react';
 import {icons} from '@assets/index';
 import {color} from '@theme/index';
+import {commonRoot} from '@navigation/NavigationRef';
+import router from '@navigation/router';
 
 const Header = () => {
   return (

@@ -2,12 +2,16 @@ import {Image, Pressable, StyleSheet, View} from 'react-native';
 import React from 'react';
 import {icons} from '@assets/index';
 import {color} from '@theme/index';
-import {bottomRoot} from '@navigation/NavigationRef';
+import {bottomRoot, commonRoot} from '@navigation/NavigationRef';
 import router from '@navigation/router';
 
 const Header = ({handleGoHome}: any) => {
   const goHome = () => {
     bottomRoot.navigate(router.HOME_SCREEN, {id: '123'});
+  };
+
+  const navigateSearchScreen = () => {
+    commonRoot.navigate(router.SEARCH_SCREEN);
   };
 
   return (
@@ -34,7 +38,7 @@ const Header = ({handleGoHome}: any) => {
             style={[styles.icon, styles.bellIcon]}
           />
         </Pressable>
-        <Pressable>
+        <Pressable onPress={navigateSearchScreen}>
           <Image
             source={icons.search}
             resizeMode="contain"

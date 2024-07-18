@@ -10,7 +10,6 @@ import {
 import {useAppDispatch, useAppSelector} from '@redux/hooks';
 import {RootState} from '@redux/store';
 import VideoBanner from '@components/VideoBanner';
-import Header from '@components/Header';
 import {color} from '@theme/index';
 import Explore from '@components/Explore';
 import {
@@ -25,8 +24,10 @@ import {bottomRoot, commonRoot} from '@navigation/NavigationRef';
 import router from '@navigation/router';
 import {useIsFocused} from '@react-navigation/native';
 import {setVideoIndex} from '@redux/video/videoSlice';
+import HeaderSearch from '@components/HeaderSearch';
 
-const HomeScreen = () => {
+const ListingVideoScreen = ({route}: any) => {
+  const textSearch = route.params?.text;
   const dispatch = useAppDispatch();
   const videoStorage = useAppSelector((state: RootState) => state.video);
 
@@ -65,6 +66,13 @@ const HomeScreen = () => {
     setShortPosition(position);
   }, []);
 
+  const clearCache = () => {
+    handleStoreIndex();
+    setIsScroll(false);
+    setActiveVideoIndex(null);
+    setActiveShortIndex(null);
+  };
+
   const refresh = () => {
     setIsLoading(true);
 
@@ -80,12 +88,14 @@ const HomeScreen = () => {
   };
 
   const navigateVideoScreen = (index: number) => {
+    clearCache();
     commonRoot.navigate(router.VIDEO_DETAIL_SCREEN, {
       sourceVideo: index % 2 === 1 ? icons.video_1 : icons.video_1,
     });
   };
 
   const navigateShortScreen = (index: number) => {
+    clearCache();
     bottomRoot.navigate(router.SHORT_SCREEN, {
       sourceVideo: index % 2 === 1 ? icons.short_1 : icons.short_2,
     });
@@ -163,11 +173,11 @@ const HomeScreen = () => {
       style={{
         backgroundColor: color.dark,
       }}>
-      <Header />
-      <Explore
+      <HeaderSearch text={textSearch} />
+      {/* <Explore
         isShowExplore={true}
         listData={['All', 'Under 10 min', 'Music', 'Manga']}
-      />
+      /> */}
       <FlatList
         onRefresh={refresh}
         refreshing={isLoading}
@@ -190,7 +200,7 @@ const HomeScreen = () => {
   );
 };
 
-export default HomeScreen;
+export default ListingVideoScreen;
 
 const styles = StyleSheet.create({
   container: {
