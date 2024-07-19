@@ -6,12 +6,13 @@ import {
   Image,
   Text,
   ActivityIndicator,
+  ScrollView,
+  RefreshControl,
 } from 'react-native';
 import {useAppDispatch, useAppSelector} from '@redux/hooks';
 import {RootState} from '@redux/store';
 import VideoBanner from '@components/VideoBanner';
 import {color} from '@theme/index';
-import Explore from '@components/Explore';
 import {
   ShortVideoPaddingHorizontal,
   ShortVideoWidth,
@@ -25,6 +26,7 @@ import router from '@navigation/router';
 import {useIsFocused} from '@react-navigation/native';
 import {setVideoIndex} from '@redux/video/videoSlice';
 import HeaderSearch from '@components/HeaderSearch';
+import ChannelInfo from '@components/ChannelInfo';
 
 const ListingVideoScreen = ({route}: any) => {
   const textSearch = route.params?.text;
@@ -174,28 +176,29 @@ const ListingVideoScreen = ({route}: any) => {
         backgroundColor: color.dark,
       }}>
       <HeaderSearch text={textSearch} />
-      {/* <Explore
-        isShowExplore={true}
-        listData={['All', 'Under 10 min', 'Music', 'Manga']}
-      /> */}
-      <FlatList
-        onRefresh={refresh}
-        refreshing={isLoading}
-        data={ListData}
-        scrollEnabled={isScroll}
-        renderItem={_renderHomeItem}
-        keyExtractor={(_, index) => index.toString()}
-        onScroll={isScroll ? handleScrollVideoBanner : () => {}}
-        showsVerticalScrollIndicator={false}
-        ListHeaderComponent={() =>
-          isLoading && (
-            <View style={styles.loadingContainer}>
-              <ActivityIndicator size="large" color={color.bg_subscribe} />
-            </View>
-          )
+
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={isLoading} onRefresh={refresh}>
+            {isLoading && (
+              <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color={color.bg_subscribe} />
+              </View>
+            )}
+          </RefreshControl>
         }
-        ListFooterComponent={() => <View style={{height: 200}} />}
-      />
+        showsVerticalScrollIndicator={false}>
+        <ChannelInfo />
+        <FlatList
+          data={ListData}
+          scrollEnabled={false}
+          renderItem={_renderHomeItem}
+          keyExtractor={(_, index) => index.toString()}
+          onScroll={isScroll ? handleScrollVideoBanner : () => {}}
+          showsVerticalScrollIndicator={false}
+          ListFooterComponent={() => <View style={{height: 200}} />}
+        />
+      </ScrollView>
     </View>
   );
 };
@@ -208,7 +211,6 @@ const styles = StyleSheet.create({
     backgroundColor: color.dark,
   },
   loadingContainer: {
-    padding: 20,
     alignItems: 'center',
   },
 });

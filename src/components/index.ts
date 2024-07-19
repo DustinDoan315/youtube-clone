@@ -12,6 +12,7 @@ import ListChannelAvatar from './ListChannelAvatar';
 import ListVideo from './ListVideo';
 import History from './History';
 import HeaderSearch from './HeaderSearch';
+import ChannelInfo from './ChannelInfo';
 
 export {
   Header,
@@ -27,5 +28,6 @@ export {
   ListVideo,
   History,
   HeaderSearch,
+  ChannelInfo,
   ListChannelAvatar,
 };
