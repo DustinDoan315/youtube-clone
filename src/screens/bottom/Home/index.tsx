@@ -165,9 +165,16 @@ const HomeScreen = () => {
       }}>
       <Header />
       <Explore
+        setIsLoading={setIsLoading}
         isShowExplore={true}
         listData={['All', 'Under 10 min', 'Music', 'Manga']}
       />
+      {isLoading && (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={color.bg_subscribe} />
+        </View>
+      )}
+
       <FlatList
         onRefresh={refresh}
         refreshing={isLoading}
@@ -177,13 +184,6 @@ const HomeScreen = () => {
         keyExtractor={(_, index) => index.toString()}
         onScroll={isScroll ? handleScrollVideoBanner : () => {}}
         showsVerticalScrollIndicator={false}
-        ListHeaderComponent={() =>
-          isLoading && (
-            <View style={styles.loadingContainer}>
-              <ActivityIndicator size="large" color={color.bg_subscribe} />
-            </View>
-          )
-        }
         ListFooterComponent={() => <View style={{height: 200}} />}
       />
     </View>
@@ -198,7 +198,10 @@ const styles = StyleSheet.create({
     backgroundColor: color.dark,
   },
   loadingContainer: {
-    padding: 20,
+    position: 'absolute',
+    top: 100,
+    alignSelf: 'center',
+    zIndex: 100,
     alignItems: 'center',
   },
 });

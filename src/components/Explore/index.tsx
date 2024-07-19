@@ -13,10 +13,21 @@ import {color} from '@theme/index';
 interface ExploreType {
   isShowExplore?: boolean;
   listData: string[];
+  setIsLoading?: any;
 }
 
-const Explore = ({isShowExplore, listData}: ExploreType) => {
+const Explore = ({isShowExplore, listData, setIsLoading}: ExploreType) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(0);
+
+  const chooseItem = (index: number) => {
+    setActiveIndex(index);
+    setIsLoading(true);
+    const timerId = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(timerId);
+  };
 
   const getBackgroundColor = (isActive: boolean) => {
     return isActive ? color.white : color.dark_light_2;
@@ -47,7 +58,7 @@ const Explore = ({isShowExplore, listData}: ExploreType) => {
             return (
               <Pressable
                 key={index}
-                onPress={() => setActiveIndex(index)}
+                onPress={() => chooseItem(index)}
                 style={[
                   styles.iconContainer,
                   {backgroundColor: getBackgroundColor(isActive)},
