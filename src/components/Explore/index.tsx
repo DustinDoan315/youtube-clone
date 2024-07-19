@@ -21,12 +21,14 @@ const Explore = ({isShowExplore, listData, setIsLoading}: ExploreType) => {
 
   const chooseItem = (index: number) => {
     setActiveIndex(index);
-    setIsLoading(true);
-    const timerId = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
+    if (setIsLoading) {
+      setIsLoading(true);
+      const timerId = setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
 
-    return () => clearTimeout(timerId);
+      return () => clearTimeout(timerId);
+    }
   };
 
   const getBackgroundColor = (isActive: boolean) => {
